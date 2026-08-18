@@ -623,6 +623,151 @@ html, body {
 .typing-dots span:nth-child(2) { animation-delay: .2s; }
 .typing-dots span:nth-child(3) { animation-delay: .4s; }
 @keyframes blink { 0%,100% { opacity: .2; } 50% { opacity: 1; } }
+
+/* ═══════════════════════════════════════
+   NEW: OVERVIEW PANEL
+═══════════════════════════════════════ */
+.ov-panel {
+  background: var(--s2); border: 1px solid var(--b2); border-radius: 10px;
+  padding: 14px 16px; margin-bottom: 14px;
+}
+.ov-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.ov-id { font-family: var(--mono); font-size: 11px; color: var(--t2); letter-spacing: .03em; }
+.ov-status { font-family: var(--mono); font-size: 10.5px; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: .04em; }
+.ov-status.running { background: var(--amber-dim); color: var(--amber); }
+.ov-status.review { background: var(--blue-dim); color: var(--blue); }
+.ov-status.done { background: var(--teal-dim); color: var(--teal); }
+.ov-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+.ov-stat { background: var(--s3); border: 1px solid var(--b1); border-radius: 8px; padding: 8px 10px; }
+.ov-stat-label { font-size: 10px; color: var(--t2); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
+.ov-stat-val { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--t1); }
+.ov-stat-val.risk-hi { color: var(--red); }
+.ov-hypo { font-size: 12px; color: var(--t2); border-top: 1px solid var(--b1); padding-top: 9px; }
+.ov-hypo b { color: var(--t1); font-weight: 500; }
+
+/* ═══════════════════════════════════════
+   NEW: PLAN CHECKLIST
+═══════════════════════════════════════ */
+.plan-list { display: flex; flex-direction: column; gap: 6px; padding: 2px 0; }
+.plan-item { display: flex; align-items: center; gap: 9px; font-size: 12.5px; padding: 3px 2px; }
+.plan-ic { width: 16px; height: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.plan-item.pdone { color: var(--t2); }
+.plan-item.pdone .plan-ic { color: var(--teal); }
+.plan-item.pcurrent { color: var(--t1); font-weight: 500; }
+.plan-item.pcurrent .plan-ic { color: var(--amber); }
+.plan-item.ptodo { color: var(--t3); }
+.plan-item.ptodo .plan-ic { color: var(--t3); }
+
+/* ═══════════════════════════════════════
+   NEW: TIMELINE
+═══════════════════════════════════════ */
+.tl-row { display: flex; gap: 12px; }
+.tl-time { font-family: var(--mono); font-size: 10.5px; color: var(--t3); width: 42px; flex-shrink: 0; padding-top: 1px; }
+.tl-line-wrap { display: flex; flex-direction: column; align-items: center; width: 14px; flex-shrink: 0; }
+.tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 3px var(--teal-dim); margin-top: 3px; }
+.tl-connector { width: 1px; flex: 1; background: var(--b2); min-height: 18px; }
+.tl-body { padding-bottom: 16px; }
+.tl-label { font-size: 12.5px; color: var(--t1); font-weight: 500; }
+.tl-sub { font-size: 11px; color: var(--t2); margin-top: 1px; }
+
+/* ═══════════════════════════════════════
+   NEW: HYPOTHESES
+═══════════════════════════════════════ */
+.hyp-card { background: var(--s3); border: 1px solid var(--b1); border-radius: 8px; padding: 11px 13px; margin-bottom: 8px; }
+.hyp-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.hyp-name { font-size: 13px; font-weight: 600; color: var(--t1); }
+.hyp-status { font-size: 10.5px; padding: 2px 8px; border-radius: 20px; font-family: var(--mono); }
+.hyp-status.supported { background: var(--teal-dim); color: var(--teal); }
+.hyp-status.rejected { background: var(--red-dim); color: var(--red); }
+.hyp-status.pending { background: var(--amber-dim); color: var(--amber); }
+.hyp-conf-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.hyp-conf-track { flex: 1; height: 4px; background: var(--s4); border-radius: 4px; overflow: hidden; }
+.hyp-conf-fill { height: 100%; border-radius: 4px; background: var(--teal); transition: width .6s ease; }
+.hyp-conf-pct { font-family: var(--mono); font-size: 11px; color: var(--t2); width: 32px; text-align: right; }
+.hyp-evidence { display: flex; flex-wrap: wrap; gap: 5px; }
+.hyp-ev-chip { font-size: 10.5px; font-family: var(--mono); background: var(--s4); border: 1px solid var(--b1); border-radius: 4px; padding: 2px 7px; color: var(--t2); }
+
+/* ═══════════════════════════════════════
+   NEW: EVIDENCE GRAPH (simplified node view)
+═══════════════════════════════════════ */
+.graph-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 8px 4px; }
+.gnode { border: 1px solid var(--b2); border-radius: 8px; padding: 7px 14px; font-size: 12px; font-family: var(--mono); text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+.gnode:hover { border-color: var(--teal); background: var(--teal-dim); }
+.gnode.gcenter { background: var(--red-dim); border-color: rgba(255,82,82,.4); color: var(--red); font-weight: 600; }
+.gnode.gip { background: var(--amber-dim); border-color: rgba(255,184,77,.4); color: var(--amber); font-weight: 600; }
+.gnode.gleaf { background: var(--s3); color: var(--t2); font-size: 11px; }
+.gvline { width: 1px; height: 16px; background: var(--b2); }
+.grow { display: flex; gap: 22px; align-items: flex-start; justify-content: center; }
+.gbranch { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.ghline { display: flex; align-items: center; }
+.ghline .seg { height: 1px; background: var(--b2); flex: 1; align-self: center; margin-top: 8px; }
+.graph-hint { text-align: center; font-size: 10.5px; color: var(--t3); margin-top: 8px; font-family: var(--mono); }
+
+/* ═══════════════════════════════════════
+   NEW: TRACEABILITY CHAIN (why? expand)
+═══════════════════════════════════════ */
+.trace-toggle { font-size: 11px; font-family: var(--mono); color: var(--teal); cursor: pointer; margin: 6px 0 2px 0; display: inline-flex; align-items: center; gap: 4px; user-select: none; }
+.trace-chain { display: none; flex-direction: column; align-items: flex-start; gap: 0; margin: 8px 0 4px 4px; }
+.trace-chain.open { display: flex; }
+.trace-step { font-size: 11.5px; font-family: var(--mono); color: var(--t2); padding: 3px 0; }
+.trace-step b { color: var(--t1); }
+.trace-arrow { color: var(--t3); font-size: 11px; padding-left: 4px; }
+
+/* ═══════════════════════════════════════
+   NEW: CONFIDENCE FACTORS
+═══════════════════════════════════════ */
+.cf-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; font-size: 12px; border-bottom: 1px solid var(--b1); }
+.cf-row:last-child { border-bottom: none; }
+.cf-name { color: var(--t2); }
+.cf-tag { font-family: var(--mono); font-size: 11px; padding: 1px 8px; border-radius: 4px; }
+.cf-tag.pos { background: var(--teal-dim); color: var(--teal); }
+.cf-tag.neg { background: var(--red-dim); color: var(--red); }
+.cf-tag.neu { background: var(--s4); color: var(--t2); }
+
+/* ═══════════════════════════════════════
+   NEW: CONFLICTING EVIDENCE
+═══════════════════════════════════════ */
+.conflict-summary { display: flex; gap: 14px; margin-bottom: 8px; }
+.cs-item { font-size: 12px; font-family: var(--mono); color: var(--t2); }
+.cs-item b { color: var(--t1); }
+.conflict-row { border-top: 1px solid var(--b1); padding-top: 8px; margin-top: 6px; font-size: 12px; color: var(--t2); }
+.conflict-row .cr-head { color: var(--amber); font-weight: 500; cursor: pointer; }
+.conflict-explain { display: none; margin-top: 6px; padding: 8px 10px; background: var(--s3); border-radius: 6px; font-size: 11.5px; color: var(--t2); border-left: 2px solid var(--amber); }
+.conflict-explain.open { display: block; }
+
+/* ═══════════════════════════════════════
+   NEW: SOURCE RELIABILITY / METRICS (source strip)
+═══════════════════════════════════════ */
+.src-tile-meta { font-size: 9.5px; color: var(--t3); font-family: var(--mono); margin-top: 3px; line-height: 1.5; }
+
+/* ═══════════════════════════════════════
+   NEW: HUMAN-IN-THE-LOOP REVIEW
+═══════════════════════════════════════ */
+.hitl-actions { display: flex; flex-direction: column; gap: 7px; margin: 8px 0 12px 0; }
+.hitl-chk { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--t1); }
+.hitl-chk input { accent-color: var(--teal); width: 14px; height: 14px; }
+.hitl-btns { display: flex; gap: 8px; }
+.hitl-btn { flex: 1; padding: 9px 0; border-radius: 7px; font-size: 12.5px; font-weight: 500; text-align: center; cursor: pointer; border: 1px solid var(--b2); transition: opacity .15s; }
+.hitl-btn:hover { opacity: .85; }
+.hitl-btn.approve { background: var(--teal); color: #06090F; border: none; }
+.hitl-btn.modify { background: var(--s3); color: var(--t1); }
+.hitl-btn.reject { background: var(--red-dim); color: var(--red); border-color: rgba(255,82,82,.3); }
+.hitl-btn.continue { background: var(--blue-dim); color: var(--blue); border-color: rgba(77,158,255,.3); }
+.hitl-decision { font-size: 11.5px; font-family: var(--mono); color: var(--teal); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--b1); display: none; }
+.hitl-decision.show { display: block; }
+
+/* ═══════════════════════════════════════
+   NEW: MEMORY / CONTEXT STRIP + EXPORT
+═══════════════════════════════════════ */
+.mem-strip { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; color: var(--t2); background: var(--s2); border: 1px solid var(--b1); border-radius: 7px; padding: 8px 12px; margin-bottom: 14px; }
+.mem-strip i { color: var(--teal); }
+.export-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.export-btn { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-family: var(--mono); color: var(--t2); background: var(--s3); border: 1px solid var(--b1); border-radius: 6px; padding: 6px 12px; cursor: pointer; transition: border-color .15s, color .15s; }
+.export-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+/* rcard header row with badge */
+.rcard-head.with-badge { display: flex; align-items: center; justify-content: space-between; }
+.rcard-badge { font-family: var(--mono); font-size: 10.5px; color: var(--t3); font-weight: 400; }
 </style>
 </head>
 <body>
@@ -688,26 +833,32 @@ html, body {
           <div class="src-tile" id="st-whois">
             <div class="src-tile-name"><i class="ti ti-world"></i>WHOIS</div>
             <div class="src-val" id="sv-whois">—</div>
+            <div class="src-tile-meta" id="sm-whois"></div>
           </div>
           <div class="src-tile" id="st-dns">
             <div class="src-tile-name"><i class="ti ti-server"></i>DNS</div>
             <div class="src-val" id="sv-dns">—</div>
+            <div class="src-tile-meta" id="sm-dns"></div>
           </div>
           <div class="src-tile" id="st-vt">
             <div class="src-tile-name"><i class="ti ti-shield-check"></i>VirusTotal</div>
             <div class="src-val" id="sv-vt">—</div>
+            <div class="src-tile-meta" id="sm-vt"></div>
           </div>
           <div class="src-tile" id="st-shodan">
             <div class="src-tile-name"><i class="ti ti-radar"></i>Shodan</div>
             <div class="src-val" id="sv-shodan">—</div>
+            <div class="src-tile-meta" id="sm-shodan"></div>
           </div>
           <div class="src-tile" id="st-otx">
             <div class="src-tile-name"><i class="ti ti-broadcast"></i>OTX</div>
             <div class="src-val" id="sv-otx">—</div>
+            <div class="src-tile-meta" id="sm-otx"></div>
           </div>
           <div class="src-tile" id="st-feeds">
             <div class="src-tile-name"><i class="ti ti-list"></i>Feeds</div>
             <div class="src-val" id="sv-feeds">—</div>
+            <div class="src-tile-meta" id="sm-feeds"></div>
           </div>
         </div>
 
@@ -831,12 +982,12 @@ const FEED_STEPS = [
 ];
 
 const SOURCE_UPDATES = {
-  whois:  { q: 900,  done: 1300, cls: 'done',    val: 'AS60781 · LeaseWeb NL\nReg: 2019-03-14' },
-  dns:    { q: 1550, done: 2000, cls: 'done',    val: 'No PTR record\nNo hostname mapped' },
-  vt:     { q: 2200, done: 2800, cls: 'flagged', val: '62/93 flagged\nC2 · malware dropper' },
-  shodan: { q: 3000, done: 3600, cls: 'flagged', val: 'Ports 443,9001,9030\nTor relay confirmed' },
-  otx:    { q: 3800, done: 4300, cls: 'flagged', val: 'APT: SOLARSHIFT\nConfidence: HIGH' },
-  feeds:  { q: 4500, done: 5000, cls: 'done',    val: 'Emerging Threats\nAbuseCH Feodo listed' },
+  whois:  { q: 900,  done: 1300, cls: 'done',    val: 'AS60781 · LeaseWeb NL\nReg: 2019-03-14', meta: 'Queried 0.4s · Evidence: 2', reliability: 'Medium', freshness: 'Live' },
+  dns:    { q: 1550, done: 2000, cls: 'done',    val: 'No PTR record\nNo hostname mapped', meta: 'Queried 0.5s · Evidence: 2', reliability: 'Medium', freshness: 'Live' },
+  vt:     { q: 2200, done: 2800, cls: 'flagged', val: '62/93 flagged\nC2 · malware dropper', meta: 'Queried 0.6s · Evidence: 4', reliability: 'High', freshness: '2 days' },
+  shodan: { q: 3000, done: 3600, cls: 'flagged', val: 'Ports 443,9001,9030\nTor relay confirmed', meta: 'Queried 0.6s · Evidence: 3', reliability: 'High', freshness: 'Live' },
+  otx:    { q: 3800, done: 4300, cls: 'flagged', val: 'APT: SOLARSHIFT\nConfidence: HIGH', meta: 'Queried 0.5s · Evidence: 4', reliability: 'High', freshness: '3 days' },
+  feeds:  { q: 4500, done: 5000, cls: 'done',    val: 'Emerging Threats\nAbuseCH Feodo listed', meta: 'Queried 0.4s · Evidence: 3', reliability: 'Medium', freshness: '11 days' },
 };
 
 const REPORT_DATA = {
@@ -1074,14 +1225,95 @@ function addFeedItem(ic, msg) {
   list.scrollTop = list.scrollHeight;
 }
 
-function setSource(key, cls, val) {
+function setSource(key, cls, val, meta) {
   document.getElementById('st-' + key).className = 'src-tile ' + cls;
   document.getElementById('sv-' + key).textContent = val;
+  const m = document.getElementById('sm-' + key);
+  if (m) m.textContent = meta || '';
 }
+
+/* ═══════════════════════════════════════════
+   NEW DATA: overview / plan / hypotheses / graph / confidence / conflicts
+═══════════════════════════════════════════ */
+const OVERVIEW_DATA = {
+  id: 'INV-2024-0817-003',
+  status: 'done', // running | review | done
+  statusLabel: 'Completed',
+  risk: 'HIGH', confidence: 91,
+  sourcesQueried: '6/6', evidenceItems: 18,
+  hypothesis: 'Active APT-attributed C2 infrastructure operating a dual-purpose Tor relay',
+};
+
+const PLAN_DATA = [
+  { label: 'Identify IOC type', state: 'done' },
+  { label: 'Query reputation (VirusTotal)', state: 'done' },
+  { label: 'Resolve infrastructure (WHOIS + DNS)', state: 'done' },
+  { label: 'Check threat feeds', state: 'done' },
+  { label: 'Investigate campaign association (OTX)', state: 'done' },
+  { label: 'Correlate related IOCs', state: 'current' },
+  { label: 'Generate final assessment', state: 'todo' },
+];
+
+const TIMELINE_DATA = [
+  { time: '16:21', label: 'Input received', sub: '185.220.101.47 submitted for investigation' },
+  { time: '16:21', label: 'Planning', sub: 'Orchestrator dispatched 6 parallel source agents' },
+  { time: '16:22', label: 'WHOIS / DNS', sub: 'Infrastructure resolution complete' },
+  { time: '16:22', label: 'VT / Shodan', sub: 'Reputation + service scan returned' },
+  { time: '16:23', label: 'Hypothesis updated', sub: 'C2 hypothesis strengthened to 91%' },
+  { time: '16:23', label: 'OTX pivot', sub: 'Campaign correlation — SOLARSHIFT' },
+  { time: '16:24', label: 'Final assessment', sub: 'HIGH RISK · 91% confidence' },
+];
+
+const HYPOTHESES_DATA = [
+  { name: 'H1 — Malicious C2 Infrastructure', conf: 91, status: 'supported', evidence: ['VirusTotal', 'Shodan', 'OTX', 'Threat feeds'] },
+  { name: 'H2 — Legitimate Tor Relay', conf: 12, status: 'rejected', evidence: ['High VT detections (against)', 'OTX correlation (against)', 'Blocklists (against)'] },
+  { name: 'H3 — Compromised Hosting Infrastructure', conf: 38, status: 'pending', evidence: ['WHOIS hosting context', 'Awaiting related-IOC pivot'] },
+];
+
+const CONFIDENCE_FACTORS = [
+  { name: 'Multi-source agreement (6/6 sources aligned)', tag: '+', cls: 'pos' },
+  { name: 'Freshness (active 3 days ago)', tag: '+', cls: 'pos' },
+  { name: 'Independent corroboration (VT + OTX + feeds)', tag: '+', cls: 'pos' },
+  { name: 'Conflicting evidence (Spamhaus not listed)', tag: '−', cls: 'neg' },
+  { name: 'Source reliability weighting applied', tag: '~', cls: 'neu' },
+];
+
+const CONFLICT_DATA = {
+  supporting: 14, ambiguous: 2, contradictory: 1,
+  items: [
+    { label: 'Spamhaus: Not listed', explain: 'Absence from Spamhaus does not contradict the C2 hypothesis because Spamhaus focuses primarily on spam-related abuse, not C2/Tor infrastructure. This is treated as a low-weight, non-contradictory signal.' }
+  ]
+};
+
+const TRACE_DATA = [
+  { src: 'VirusTotal', text: '62/93 malicious' },
+  { src: 'Shodan', text: 'Tor relay + suspicious TLS' },
+  { src: 'OTX', text: 'APT campaign correlation' },
+  { src: 'Threat Feeds', text: '2 independent listings' },
+  { src: 'Agent Assessment', text: 'HIGH RISK · 91% confidence' },
+];
 
 function buildReport(r) {
   const scroll = document.getElementById('reportScroll');
   scroll.innerHTML = '';
+
+  // ── 1. Investigation overview panel ──
+  const ov = OVERVIEW_DATA;
+  const ovPanel = document.createElement('div');
+  ovPanel.className = 'ov-panel';
+  ovPanel.innerHTML = `
+    <div class="ov-top">
+      <span class="ov-id">${ov.id} &nbsp;·&nbsp; ${DEMO_IOC} &nbsp;·&nbsp; IPv4 Address</span>
+      <span class="ov-status ${ov.status}">${ov.statusLabel}</span>
+    </div>
+    <div class="ov-grid">
+      <div class="ov-stat"><div class="ov-stat-label">Risk</div><div class="ov-stat-val risk-hi">${ov.risk}</div></div>
+      <div class="ov-stat"><div class="ov-stat-label">Confidence</div><div class="ov-stat-val">${ov.confidence}%</div></div>
+      <div class="ov-stat"><div class="ov-stat-label">Sources queried</div><div class="ov-stat-val">${ov.sourcesQueried}</div></div>
+      <div class="ov-stat"><div class="ov-stat-label">Evidence items</div><div class="ov-stat-val">${ov.evidenceItems}</div></div>
+    </div>
+    <div class="ov-hypo"><b>Current hypothesis:</b> ${ov.hypothesis}</div>`;
+  scroll.appendChild(ovPanel);
 
   // risk + title
   const row = document.createElement('div');
@@ -1105,12 +1337,118 @@ function buildReport(r) {
   sumCard.innerHTML = `<div class="rcard-head"><i class="ti ti-file-description"></i>Threat summary</div><div class="summary-text">${r.summary}</div>`;
   scroll.appendChild(sumCard);
 
+  // ── 2. Investigation plan ──
+  const planCard = document.createElement('div');
+  planCard.className = 'rcard';
+  planCard.innerHTML = '<div class="rcard-head"><i class="ti ti-route"></i>Investigation plan</div><div class="plan-list">' +
+    PLAN_DATA.map(p => {
+      const ic = p.state === 'done' ? '<i class="ti ti-check"></i>' : p.state === 'current' ? '<i class="ti ti-arrow-right"></i>' : '<i class="ti ti-circle"></i>';
+      return `<div class="plan-item p${p.state}"><span class="plan-ic">${ic}</span>${p.label}</div>`;
+    }).join('') + '</div>';
+  scroll.appendChild(planCard);
+
+  // ── 3. Investigation timeline ──
+  const tlCard = document.createElement('div');
+  tlCard.className = 'rcard';
+  tlCard.innerHTML = '<div class="rcard-head"><i class="ti ti-timeline"></i>Investigation timeline</div>' +
+    TIMELINE_DATA.map((t, i) => `
+      <div class="tl-row">
+        <div class="tl-time">${t.time}</div>
+        <div class="tl-line-wrap"><div class="tl-dot"></div>${i < TIMELINE_DATA.length - 1 ? '<div class="tl-connector"></div>' : ''}</div>
+        <div class="tl-body"><div class="tl-label">${t.label}</div><div class="tl-sub">${t.sub}</div></div>
+      </div>`).join('');
+  scroll.appendChild(tlCard);
+
+  // ── 4. Hypotheses ──
+  const hypCard = document.createElement('div');
+  hypCard.className = 'rcard';
+  hypCard.innerHTML = '<div class="rcard-head"><i class="ti ti-bulb"></i>Investigation hypotheses</div>' +
+    HYPOTHESES_DATA.map(h => `
+      <div class="hyp-card">
+        <div class="hyp-head"><span class="hyp-name">${h.name}</span><span class="hyp-status ${h.status}">${h.status === 'supported' ? '🟢 Supported' : h.status === 'rejected' ? '🔴 Rejected' : '🟡 Under investigation'}</span></div>
+        <div class="hyp-conf-row"><div class="hyp-conf-track"><div class="hyp-conf-fill" style="width:${h.conf}%;background:${h.status === 'rejected' ? 'var(--red)' : h.status === 'pending' ? 'var(--amber)' : 'var(--teal)'}"></div></div><span class="hyp-conf-pct">${h.conf}%</span></div>
+        <div class="hyp-evidence">${h.evidence.map(e => `<span class="hyp-ev-chip">${e}</span>`).join('')}</div>
+      </div>`).join('');
+  scroll.appendChild(hypCard);
+
+  // ── 5. Evidence / knowledge graph (simplified) ──
+  const graphCard = document.createElement('div');
+  graphCard.className = 'rcard';
+  graphCard.innerHTML = `
+    <div class="rcard-head with-badge"><span><i class="ti ti-affiliate"></i>Evidence graph</span><span class="rcard-badge">click a node in the real build to inspect it</span></div>
+    <div class="graph-wrap">
+      <div class="gnode gcenter">SOLARSHIFT</div>
+      <div class="gvline"></div>
+      <div class="grow">
+        <div class="gbranch"><div class="gnode gleaf">14 related IOCs</div></div>
+        <div class="gbranch"><div class="gnode gleaf">Malware hashes</div></div>
+      </div>
+      <div class="gvline"></div>
+      <div class="gnode gip">185.220.101.47</div>
+      <div class="gvline"></div>
+      <div class="gnode gleaf" style="margin-bottom:6px">Tor Relay</div>
+      <div class="grow">
+        <div class="gbranch"><div class="gnode gleaf">ASN → AS60781 (LeaseWeb)</div></div>
+        <div class="gbranch"><div class="gnode gleaf">DNS → No PTR</div></div>
+        <div class="gbranch"><div class="gnode gleaf">Reputation → VT 62/93</div></div>
+      </div>
+    </div>
+    <div class="graph-hint">Full build: Neo4j-backed graph with clickable nodes (source, evidence, timestamp, confidence, related indicators)</div>`;
+  scroll.appendChild(graphCard);
+
   // evidence
   const evCard = document.createElement('div');
   evCard.className = 'rcard';
   evCard.innerHTML = '<div class="rcard-head"><i class="ti ti-link"></i>Evidence chain — ' + r.evidence.length + ' sources</div>' +
-    r.evidence.map(e => `<div class="ev-row"><span class="ev-src-badge">${e.src}</span><span class="ev-body">${e.text}<span class="ev-tag ${e.tagCls}">${e.tag}</span></span></div>`).join('');
+    r.evidence.map(e => `<div class="ev-row"><span class="ev-src-badge">${e.src}</span><span class="ev-body">${e.text}<span class="ev-tag ${e.tagCls}">${e.tag}</span></span></div>`).join('') +
+    `<div class="trace-toggle" onclick="toggleTrace(this)"><i class="ti ti-chevron-right"></i> Why HIGH RISK? — show traceability chain</div>
+    <div class="trace-chain">${TRACE_DATA.map((t, i) => `<div class="trace-step"><b>${t.src}</b> — ${t.text}</div>${i < TRACE_DATA.length - 1 ? '<div class="trace-arrow">↓</div>' : ''}`).join('')}</div>`;
   scroll.appendChild(evCard);
+
+  // ── conflicting / ambiguous evidence ──
+  const conflictCard = document.createElement('div');
+  conflictCard.className = 'rcard';
+  const cd = CONFLICT_DATA;
+  conflictCard.innerHTML = `
+    <div class="rcard-head"><i class="ti ti-scale"></i>Evidence summary</div>
+    <div class="conflict-summary">
+      <span class="cs-item">🟢 Supporting: <b>${cd.supporting}</b></span>
+      <span class="cs-item">🟡 Ambiguous: <b>${cd.ambiguous}</b></span>
+      <span class="cs-item">🔴 Contradictory: <b>${cd.contradictory}</b></span>
+    </div>
+    ${cd.items.map(it => `
+      <div class="conflict-row">
+        <div class="cr-head" onclick="this.nextElementSibling.classList.toggle('open')"><i class="ti ti-chevron-right"></i> ${it.label}</div>
+        <div class="conflict-explain">${it.explain}</div>
+      </div>`).join('')}`;
+  scroll.appendChild(conflictCard);
+
+  // ── confidence model breakdown ──
+  const cfCard = document.createElement('div');
+  cfCard.className = 'rcard';
+  cfCard.innerHTML = '<div class="rcard-head"><i class="ti ti-percentage"></i>Confidence model — ' + r.confidence + '%</div>' +
+    CONFIDENCE_FACTORS.map(f => `<div class="cf-row"><span class="cf-name">${f.name}</span><span class="cf-tag ${f.cls}">${f.tag}</span></div>`).join('');
+  scroll.appendChild(cfCard);
+
+  // ── human-in-the-loop review ──
+  const hitlCard = document.createElement('div');
+  hitlCard.className = 'rcard';
+  hitlCard.innerHTML = `
+    <div class="rcard-head"><i class="ti ti-user-check"></i>Analyst review</div>
+    <div class="summary-text" style="margin-bottom:8px">Agent assessment: <b style="color:var(--red)">HIGH RISK — Active C2 infrastructure.</b> Recommended actions require analyst approval before execution.</div>
+    <div class="hitl-actions">
+      <label class="hitl-chk"><input type="checkbox" checked> Block IP</label>
+      <label class="hitl-chk"><input type="checkbox" checked> Search SIEM for internal contact</label>
+      <label class="hitl-chk"><input type="checkbox" checked> Investigate related IOCs</label>
+    </div>
+    <div class="hitl-btns">
+      <div class="hitl-btn approve" onclick="hitlDecide('Approved by analyst — executing recommended actions.')">Approve</div>
+      <div class="hitl-btn modify" onclick="hitlDecide('Marked for modification — awaiting revised action set.')">Modify</div>
+      <div class="hitl-btn reject" onclick="hitlDecide('Rejected — assessment flagged for secondary review.')">Reject</div>
+      <div class="hitl-btn continue" onclick="hitlDecide('Continuing investigation — pivoting into 14 related IOCs.')">Continue Investigation</div>
+    </div>
+    <div class="hitl-decision" id="hitlDecision"></div>`;
+  scroll.appendChild(hitlCard);
 
   // actions
   const actCard = document.createElement('div');
@@ -1119,10 +1457,45 @@ function buildReport(r) {
     r.actions.map((a, i) => `<div class="action-row ${a.sev}"><span class="action-num">0${i+1}</span><span class="action-text">${a.text}</span></div>`).join('');
   scroll.appendChild(actCard);
 
+  // ── memory / context strip ──
+  const memStrip = document.createElement('div');
+  memStrip.className = 'mem-strip';
+  memStrip.innerHTML = `<i class="ti ti-database"></i> Context: 18 evidence items · 3 hypotheses · 2 investigation iterations · memory retained across pivots`;
+  scroll.appendChild(memStrip);
+
+  // ── export ──
+  const exportCard = document.createElement('div');
+  exportCard.className = 'rcard';
+  exportCard.innerHTML = `
+    <div class="rcard-head"><i class="ti ti-download"></i>Export report</div>
+    <div class="export-row">
+      <div class="export-btn" onclick="exportStub('PDF')"><i class="ti ti-file-type-pdf"></i>PDF</div>
+      <div class="export-btn" onclick="exportStub('HTML')"><i class="ti ti-file-type-html"></i>HTML</div>
+      <div class="export-btn" onclick="exportStub('JSON')"><i class="ti ti-file-type-json"></i>JSON</div>
+      <div class="export-btn" onclick="exportStub('STIX 2.1')"><i class="ti ti-file-code"></i>STIX 2.1</div>
+    </div>`;
+  scroll.appendChild(exportCard);
+
   // show chat
   document.getElementById('chatDock').style.display = 'block';
   document.getElementById('chatMessages').innerHTML = '';
   addChatBubble('chatMessages', 'agent', 'cb-agent', 'Investigation complete. I\'ve analysed 185.220.101.47 across 6 OSINT sources with 91% confidence. This is an active APT C2 node. Ask me anything, or switch to the Agent Lab tab to interrogate each source agent individually.');
+}
+
+function toggleTrace(el) {
+  el.classList.toggle('open');
+  el.querySelector('i').className = el.classList.contains('open') ? 'ti ti-chevron-down' : 'ti ti-chevron-right';
+  el.nextElementSibling.classList.toggle('open');
+}
+
+function hitlDecide(msg) {
+  const d = document.getElementById('hitlDecision');
+  d.textContent = '✓ ' + msg;
+  d.classList.add('show');
+}
+
+function exportStub(fmt) {
+  addChatBubble('chatMessages', 'agent', 'cb-agent', `[Demo] Export as ${fmt} — in the production build this generates a signed ${fmt} report bundle including the evidence graph, timeline, and analyst decision.`);
 }
 
 function runInvestigation() {
@@ -1140,9 +1513,9 @@ function runInvestigation() {
   });
 
   // schedule source tile updates
-  Object.entries(SOURCE_UPDATES).forEach(([key, { q, done, cls, val }]) => {
-    timers.push(setTimeout(() => setSource(key, 'querying', '⠿ Querying…'), q));
-    timers.push(setTimeout(() => setSource(key, cls, val), done));
+  Object.entries(SOURCE_UPDATES).forEach(([key, { q, done, cls, val, meta }]) => {
+    timers.push(setTimeout(() => setSource(key, 'querying', '⠿ Querying…', ''), q));
+    timers.push(setTimeout(() => setSource(key, cls, val, meta), done));
   });
 
   // build report
