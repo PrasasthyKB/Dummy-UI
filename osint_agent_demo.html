@@ -430,6 +430,7 @@ html, body {
    VIEW 2 — AGENT LAB
 ═══════════════════════════════════════ */
 #v-lab { flex-direction: column; }
+#v-graph { flex-direction: column; }
 
 .lab-banner {
   flex-shrink: 0; padding: 11px 24px;
@@ -625,149 +626,266 @@ html, body {
 @keyframes blink { 0%,100% { opacity: .2; } 50% { opacity: 1; } }
 
 /* ═══════════════════════════════════════
+   NEW: MEMORY / CONTEXT CHIP
+═══════════════════════════════════════ */
+.mem-chip {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 10.5px; color: var(--t3);
+  border: 1px solid var(--b1); border-radius: 20px;
+  padding: 4px 10px; white-space: nowrap;
+}
+.mem-chip i { font-size: 11px; color: var(--purple); }
+.mem-chip b { color: var(--t2); font-weight: 500; }
+
+/* ═══════════════════════════════════════
    NEW: OVERVIEW PANEL
 ═══════════════════════════════════════ */
-.ov-panel {
-  background: var(--s2); border: 1px solid var(--b2); border-radius: 10px;
-  padding: 14px 16px; margin-bottom: 14px;
+.ov-card { padding: 14px 16px; }
+.ov-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.ov-id { font-family: var(--mono); font-size: 11px; color: var(--t3); }
+.ov-id b { color: var(--teal); }
+.ov-status-pill {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .04em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 20px; font-weight: 600;
 }
-.ov-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.ov-id { font-family: var(--mono); font-size: 11px; color: var(--t2); letter-spacing: .03em; }
-.ov-status { font-family: var(--mono); font-size: 10.5px; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: .04em; }
-.ov-status.running { background: var(--amber-dim); color: var(--amber); }
-.ov-status.review { background: var(--blue-dim); color: var(--blue); }
-.ov-status.done { background: var(--teal-dim); color: var(--teal); }
-.ov-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
-.ov-stat { background: var(--s3); border: 1px solid var(--b1); border-radius: 8px; padding: 8px 10px; }
-.ov-stat-label { font-size: 10px; color: var(--t2); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
-.ov-stat-val { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--t1); }
-.ov-stat-val.risk-hi { color: var(--red); }
-.ov-hypo { font-size: 12px; color: var(--t2); border-top: 1px solid var(--b1); padding-top: 9px; }
-.ov-hypo b { color: var(--t1); font-weight: 500; }
-
-/* ═══════════════════════════════════════
-   NEW: PLAN CHECKLIST
-═══════════════════════════════════════ */
-.plan-list { display: flex; flex-direction: column; gap: 6px; padding: 2px 0; }
-.plan-item { display: flex; align-items: center; gap: 9px; font-size: 12.5px; padding: 3px 2px; }
-.plan-ic { width: 16px; height: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; }
-.plan-item.pdone { color: var(--t2); }
-.plan-item.pdone .plan-ic { color: var(--teal); }
-.plan-item.pcurrent { color: var(--t1); font-weight: 500; }
-.plan-item.pcurrent .plan-ic { color: var(--amber); }
-.plan-item.ptodo { color: var(--t3); }
-.plan-item.ptodo .plan-ic { color: var(--t3); }
-
-/* ═══════════════════════════════════════
-   NEW: TIMELINE
-═══════════════════════════════════════ */
-.tl-row { display: flex; gap: 12px; }
-.tl-time { font-family: var(--mono); font-size: 10.5px; color: var(--t3); width: 42px; flex-shrink: 0; padding-top: 1px; }
-.tl-line-wrap { display: flex; flex-direction: column; align-items: center; width: 14px; flex-shrink: 0; }
-.tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 3px var(--teal-dim); margin-top: 3px; }
-.tl-connector { width: 1px; flex: 1; background: var(--b2); min-height: 18px; }
-.tl-body { padding-bottom: 16px; }
-.tl-label { font-size: 12.5px; color: var(--t1); font-weight: 500; }
-.tl-sub { font-size: 11px; color: var(--t2); margin-top: 1px; }
-
-/* ═══════════════════════════════════════
-   NEW: HYPOTHESES
-═══════════════════════════════════════ */
-.hyp-card { background: var(--s3); border: 1px solid var(--b1); border-radius: 8px; padding: 11px 13px; margin-bottom: 8px; }
-.hyp-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-.hyp-name { font-size: 13px; font-weight: 600; color: var(--t1); }
-.hyp-status { font-size: 10.5px; padding: 2px 8px; border-radius: 20px; font-family: var(--mono); }
-.hyp-status.supported { background: var(--teal-dim); color: var(--teal); }
-.hyp-status.rejected { background: var(--red-dim); color: var(--red); }
-.hyp-status.pending { background: var(--amber-dim); color: var(--amber); }
-.hyp-conf-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
-.hyp-conf-track { flex: 1; height: 4px; background: var(--s4); border-radius: 4px; overflow: hidden; }
-.hyp-conf-fill { height: 100%; border-radius: 4px; background: var(--teal); transition: width .6s ease; }
-.hyp-conf-pct { font-family: var(--mono); font-size: 11px; color: var(--t2); width: 32px; text-align: right; }
-.hyp-evidence { display: flex; flex-wrap: wrap; gap: 5px; }
-.hyp-ev-chip { font-size: 10.5px; font-family: var(--mono); background: var(--s4); border: 1px solid var(--b1); border-radius: 4px; padding: 2px 7px; color: var(--t2); }
-
-/* ═══════════════════════════════════════
-   NEW: EVIDENCE GRAPH (simplified node view)
-═══════════════════════════════════════ */
-.graph-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 8px 4px; }
-.gnode { border: 1px solid var(--b2); border-radius: 8px; padding: 7px 14px; font-size: 12px; font-family: var(--mono); text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
-.gnode:hover { border-color: var(--teal); background: var(--teal-dim); }
-.gnode.gcenter { background: var(--red-dim); border-color: rgba(255,82,82,.4); color: var(--red); font-weight: 600; }
-.gnode.gip { background: var(--amber-dim); border-color: rgba(255,184,77,.4); color: var(--amber); font-weight: 600; }
-.gnode.gleaf { background: var(--s3); color: var(--t2); font-size: 11px; }
-.gvline { width: 1px; height: 16px; background: var(--b2); }
-.grow { display: flex; gap: 22px; align-items: flex-start; justify-content: center; }
-.gbranch { display: flex; flex-direction: column; align-items: center; gap: 0; }
-.ghline { display: flex; align-items: center; }
-.ghline .seg { height: 1px; background: var(--b2); flex: 1; align-self: center; margin-top: 8px; }
-.graph-hint { text-align: center; font-size: 10.5px; color: var(--t3); margin-top: 8px; font-family: var(--mono); }
-
-/* ═══════════════════════════════════════
-   NEW: TRACEABILITY CHAIN (why? expand)
-═══════════════════════════════════════ */
-.trace-toggle { font-size: 11px; font-family: var(--mono); color: var(--teal); cursor: pointer; margin: 6px 0 2px 0; display: inline-flex; align-items: center; gap: 4px; user-select: none; }
-.trace-chain { display: none; flex-direction: column; align-items: flex-start; gap: 0; margin: 8px 0 4px 4px; }
-.trace-chain.open { display: flex; }
-.trace-step { font-size: 11.5px; font-family: var(--mono); color: var(--t2); padding: 3px 0; }
-.trace-step b { color: var(--t1); }
-.trace-arrow { color: var(--t3); font-size: 11px; padding-left: 4px; }
+.ov-status-running   { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(77,158,255,.3); }
+.ov-status-review     { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(255,184,77,.3); }
+.ov-status-completed  { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(0,229,184,.3); }
+.ov-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+.ov-item {
+  background: var(--s3); border: 1px solid var(--b1); border-radius: 8px;
+  padding: 9px 11px;
+}
+.ov-item-label { font-size: 10px; color: var(--t3); font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+.ov-item-val { font-size: 13px; color: var(--t1); font-weight: 500; }
+.ov-item-val.accent-red  { color: var(--red); }
+.ov-item-val.accent-teal { color: var(--teal); }
+.ov-hypothesis {
+  margin-top: 10px; padding: 9px 11px; border-radius: 8px;
+  background: var(--purple-dim); border: 1px solid rgba(167,139,250,.25);
+  font-size: 12px; color: var(--t2); line-height: 1.55;
+}
+.ov-hypothesis b { color: var(--purple); }
 
 /* ═══════════════════════════════════════
    NEW: CONFIDENCE FACTORS
 ═══════════════════════════════════════ */
-.cf-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; font-size: 12px; border-bottom: 1px solid var(--b1); }
-.cf-row:last-child { border-bottom: none; }
-.cf-name { color: var(--t2); }
-.cf-tag { font-family: var(--mono); font-size: 11px; padding: 1px 8px; border-radius: 4px; }
-.cf-tag.pos { background: var(--teal-dim); color: var(--teal); }
-.cf-tag.neg { background: var(--red-dim); color: var(--red); }
-.cf-tag.neu { background: var(--s4); color: var(--t2); }
+.conf-factors { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+.cf-row { display: flex; align-items: center; gap: 9px; font-size: 12px; }
+.cf-tag {
+  width: 20px; height: 20px; border-radius: 5px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+.cf-pos { background: var(--teal-dim); color: var(--teal); }
+.cf-neg { background: var(--red-dim); color: var(--red); }
+.cf-neu { background: var(--s3); color: var(--t3); }
+.cf-label { color: var(--t2); flex: 1; }
+.cf-weight { font-family: var(--mono); font-size: 11px; color: var(--t3); }
 
 /* ═══════════════════════════════════════
-   NEW: CONFLICTING EVIDENCE
+   NEW: PLANNER
 ═══════════════════════════════════════ */
-.conflict-summary { display: flex; gap: 14px; margin-bottom: 8px; }
-.cs-item { font-size: 12px; font-family: var(--mono); color: var(--t2); }
-.cs-item b { color: var(--t1); }
-.conflict-row { border-top: 1px solid var(--b1); padding-top: 8px; margin-top: 6px; font-size: 12px; color: var(--t2); }
-.conflict-row .cr-head { color: var(--amber); font-weight: 500; cursor: pointer; }
-.conflict-explain { display: none; margin-top: 6px; padding: 8px 10px; background: var(--s3); border-radius: 6px; font-size: 11.5px; color: var(--t2); border-left: 2px solid var(--amber); }
-.conflict-explain.open { display: block; }
+.plan-list { display: flex; flex-direction: column; gap: 2px; }
+.plan-step { display: flex; align-items: center; gap: 9px; padding: 6px 2px; font-size: 12.5px; }
+.plan-mark { width: 16px; text-align: center; flex-shrink: 0; font-size: 13px; }
+.plan-step.plan-done .plan-mark { color: var(--teal); }
+.plan-step.plan-done .plan-text { color: var(--t2); text-decoration: line-through; text-decoration-color: var(--t3); }
+.plan-step.plan-current .plan-mark { color: var(--blue); animation: pulse-ring 1.5s infinite; border-radius: 50%; }
+.plan-step.plan-current .plan-text { color: var(--t1); font-weight: 500; }
+.plan-step.plan-pending .plan-mark { color: var(--t3); }
+.plan-step.plan-pending .plan-text { color: var(--t3); }
 
 /* ═══════════════════════════════════════
-   NEW: SOURCE RELIABILITY / METRICS (source strip)
+   NEW: HYPOTHESES
 ═══════════════════════════════════════ */
-.src-tile-meta { font-size: 9.5px; color: var(--t3); font-family: var(--mono); margin-top: 3px; line-height: 1.5; }
+.hyp-item { padding: 11px 0; border-bottom: 1px solid var(--b1); }
+.hyp-item:last-child { border-bottom: none; }
+.hyp-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.hyp-id { font-family: var(--mono); font-size: 11px; color: var(--t3); }
+.hyp-name { font-size: 13px; font-weight: 500; color: var(--t1); flex: 1; }
+.hyp-status-badge { font-size: 10px; font-family: var(--mono); padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+.hyp-supported { background: var(--teal-dim); color: var(--teal); }
+.hyp-rejected  { background: var(--red-dim); color: var(--red); }
+.hyp-active    { background: var(--amber-dim); color: var(--amber); }
+.hyp-track { height: 5px; border-radius: 3px; background: var(--s3); overflow: hidden; margin-bottom: 6px; }
+.hyp-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
+.hyp-fill.hf-sup { background: var(--teal); }
+.hyp-fill.hf-rej { background: var(--red); }
+.hyp-fill.hf-act { background: var(--amber); }
+.hyp-conf-txt { font-family: var(--mono); font-size: 11px; color: var(--t3); margin-bottom: 6px; }
+.hyp-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.hyp-tag {
+  font-size: 10.5px; font-family: var(--mono); padding: 2px 7px; border-radius: 4px;
+  background: var(--s3); color: var(--t2); border: 1px solid var(--b1);
+}
 
 /* ═══════════════════════════════════════
-   NEW: HUMAN-IN-THE-LOOP REVIEW
+   NEW: EVIDENCE SUMMARY / TRACE / CONFLICT
 ═══════════════════════════════════════ */
-.hitl-actions { display: flex; flex-direction: column; gap: 7px; margin: 8px 0 12px 0; }
-.hitl-chk { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--t1); }
-.hitl-chk input { accent-color: var(--teal); width: 14px; height: 14px; }
-.hitl-btns { display: flex; gap: 8px; }
-.hitl-btn { flex: 1; padding: 9px 0; border-radius: 7px; font-size: 12.5px; font-weight: 500; text-align: center; cursor: pointer; border: 1px solid var(--b2); transition: opacity .15s; }
-.hitl-btn:hover { opacity: .85; }
-.hitl-btn.approve { background: var(--teal); color: #06090F; border: none; }
-.hitl-btn.modify { background: var(--s3); color: var(--t1); }
-.hitl-btn.reject { background: var(--red-dim); color: var(--red); border-color: rgba(255,82,82,.3); }
-.hitl-btn.continue { background: var(--blue-dim); color: var(--blue); border-color: rgba(77,158,255,.3); }
-.hitl-decision { font-size: 11.5px; font-family: var(--mono); color: var(--teal); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--b1); display: none; }
-.hitl-decision.show { display: block; }
+.ev-summary-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.ev-sum-chip {
+  display: flex; align-items: center; gap: 6px; font-size: 11.5px;
+  padding: 5px 10px; border-radius: 20px; font-family: var(--mono);
+  border: 1px solid var(--b1); background: var(--s3); cursor: default;
+}
+.ev-sum-chip.support { color: var(--teal); }
+.ev-sum-chip.ambig   { color: var(--amber); }
+.ev-sum-chip.contra  { color: var(--red); cursor: pointer; }
+.ev-sum-chip.contra:hover { border-color: rgba(255,82,82,.4); }
+.ev-row.clickable { cursor: pointer; }
+.ev-row.clickable:hover .ev-body { color: var(--t1); }
+.ev-why-link { color: var(--blue); font-size: 10.5px; font-family: var(--mono); margin-left: 6px; white-space: nowrap; }
+.ev-trace {
+  display: none; margin: 8px 0 4px 0; padding: 10px 12px; border-radius: 8px;
+  background: var(--s3); border: 1px dashed var(--b2);
+}
+.ev-trace.show { display: block; }
+.ev-trace-step { display: flex; align-items: flex-start; gap: 8px; font-size: 11.5px; padding: 4px 0; color: var(--t2); }
+.ev-trace-step i { font-size: 12px; color: var(--t3); margin-top: 2px; }
+.ev-trace-step b { color: var(--t1); }
+.conflict-box {
+  display: none; margin-top: 8px; padding: 10px 12px; border-radius: 8px;
+  background: var(--red-dim); border: 1px solid rgba(255,82,82,.25); font-size: 12px; color: var(--t2); line-height: 1.6;
+}
+.conflict-box.show { display: block; }
+.conflict-box b { color: var(--red); }
 
 /* ═══════════════════════════════════════
-   NEW: MEMORY / CONTEXT STRIP + EXPORT
+   NEW: TIMELINE
 ═══════════════════════════════════════ */
-.mem-strip { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; color: var(--t2); background: var(--s2); border: 1px solid var(--b1); border-radius: 7px; padding: 8px 12px; margin-bottom: 14px; }
-.mem-strip i { color: var(--teal); }
+.tl-row { display: flex; align-items: flex-start; overflow-x: auto; padding: 6px 2px 2px; gap: 0; }
+.tl-node { display: flex; flex-direction: column; align-items: center; min-width: 92px; position: relative; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--teal); border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--teal); margin-bottom: 6px; z-index: 1; }
+.tl-node.tl-bad .tl-dot { background: var(--red); box-shadow: 0 0 0 1px var(--red); }
+.tl-line { position: absolute; top: 4px; left: -46px; width: 92px; height: 2px; background: var(--b2); }
+.tl-node:first-child .tl-line { display: none; }
+.tl-time { font-family: var(--mono); font-size: 10px; color: var(--t3); margin-bottom: 2px; }
+.tl-label { font-size: 11px; color: var(--t2); text-align: center; line-height: 1.3; padding: 0 4px; }
+
+/* ═══════════════════════════════════════
+   NEW: ANALYST REVIEW (HUMAN IN THE LOOP)
+═══════════════════════════════════════ */
+.review-card { border-color: rgba(167,139,250,.25); }
+.review-verdict { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.review-checklist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.review-check-row { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: var(--t1); }
+.review-check-row input { accent-color: var(--teal); width: 14px; height: 14px; }
+.review-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.rbtn {
+  font-family: var(--sans); font-size: 12px; font-weight: 500; padding: 7px 13px;
+  border-radius: 6px; cursor: pointer; border: 1px solid var(--b2); background: var(--s3); color: var(--t1);
+  transition: filter .15s, background .15s;
+}
+.rbtn:hover { filter: brightness(1.15); }
+.rbtn.rb-approve { background: var(--teal-dim); border-color: rgba(0,229,184,.35); color: var(--teal); }
+.rbtn.rb-modify  { background: var(--amber-dim); border-color: rgba(255,184,77,.35); color: var(--amber); }
+.rbtn.rb-reject  { background: var(--red-dim); border-color: rgba(255,82,82,.35); color: var(--red); }
+.rbtn.rb-continue{ background: var(--purple-dim); border-color: rgba(167,139,250,.35); color: var(--purple); }
+.rbtn:disabled { opacity: .4; cursor: not-allowed; filter: none; }
+.review-outcome {
+  margin-top: 10px; padding: 9px 11px; border-radius: 8px; font-size: 12px; line-height: 1.55;
+  display: none;
+}
+.review-outcome.show { display: block; }
+
+/* ═══════════════════════════════════════
+   NEW: ITERATION BADGE / EXPORT ROW
+═══════════════════════════════════════ */
+.iter-badge {
+  display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px;
+  color: var(--purple); background: var(--purple-dim); border: 1px solid rgba(167,139,250,.3);
+  padding: 2px 8px; border-radius: 20px; margin-left: 8px; vertical-align: middle;
+}
 .export-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.export-btn { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-family: var(--mono); color: var(--t2); background: var(--s3); border: 1px solid var(--b1); border-radius: 6px; padding: 6px 12px; cursor: pointer; transition: border-color .15s, color .15s; }
-.export-btn:hover { border-color: var(--teal); color: var(--teal); }
+.exp-btn {
+  display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--t2);
+  background: var(--s3); border: 1px solid var(--b1); border-radius: 6px; padding: 6px 11px; cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.exp-btn:hover { border-color: var(--b3); color: var(--t1); }
+.exp-toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--s4); border: 1px solid var(--b2); border-radius: 8px;
+  padding: 9px 16px; font-size: 12px; color: var(--t1); box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 999;
+}
+.exp-toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
 
-/* rcard header row with badge */
-.rcard-head.with-badge { display: flex; align-items: center; justify-content: space-between; }
-.rcard-badge { font-family: var(--mono); font-size: 10.5px; color: var(--t3); font-weight: 400; }
+/* ═══════════════════════════════════════
+   NEW: SOURCE TILE EXTRAS
+═══════════════════════════════════════ */
+.src-sub { font-size: 9.5px; color: var(--t3); font-family: var(--mono); margin-top: 3px; line-height: 1.5; white-space: pre-line; }
+
+/* ═══════════════════════════════════════
+   NEW: EVIDENCE GRAPH VIEW
+═══════════════════════════════════════ */
+.graph-body { flex: 1; display: flex; overflow: hidden; }
+.graph-controls {
+  width: 200px; flex-shrink: 0; border-right: 1px solid var(--b1); background: var(--s1);
+  padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+}
+.gc-card { background: var(--s2); border: 1px solid var(--b1); border-radius: 10px; padding: 12px 13px; }
+.gc-card-title { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
+.gc-toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.gc-toggle-row:last-child { margin-bottom: 0; }
+.gc-toggle-label { font-size: 11.5px; color: var(--t2); display: flex; align-items: center; gap: 6px; }
+.gc-toggle {
+  width: 30px; height: 17px; border-radius: 20px; border: none; background: var(--s4); cursor: pointer;
+  position: relative; flex-shrink: 0; transition: background .15s;
+}
+.gc-toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%;
+  background: var(--t3); transition: left .15s, background .15s;
+}
+.gc-toggle.on { background: var(--teal-dim); }
+.gc-toggle.on::after { left: 15px; background: var(--teal); }
+.gc-btn {
+  width: 100%; font-family: var(--sans); font-size: 11.5px; font-weight: 500; color: var(--t2);
+  background: var(--s3); border: 1px solid var(--b2); border-radius: 7px; padding: 8px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px; transition: color .15s, border-color .15s;
+}
+.gc-btn:hover { color: var(--t1); border-color: var(--b3); }
+.graph-canvas-wrap {
+  flex: 1; position: relative; overflow: hidden; cursor: grab;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0) 0 0/22px 22px, var(--s1);
+  touch-action: none;
+}
+.graph-canvas-wrap.panning { cursor: grabbing; }
+.graph-canvas-wrap.dragnode { cursor: pointer; }
+#graphCanvasEl { width: 100%; height: 100%; display: block; }
+.graph-zoom-controls {
+  position: absolute; top: 12px; right: 12px; z-index: 5;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.gzc-btn {
+  width: 30px; height: 30px; border-radius: 7px; background: var(--s3); border: 1px solid var(--b2);
+  color: var(--t2); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px;
+  transition: color .15s, border-color .15s;
+}
+.gzc-btn:hover { color: var(--t1); border-color: var(--b3); }
+.graph-side {
+  width: 300px; flex-shrink: 0; border-left: 1px solid var(--b1); background: var(--s1);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.graph-side-detail { flex: 1 1 50%; overflow-y: auto; padding: 16px; border-bottom: 1px solid var(--b1); min-height: 100px; }
+.graph-chat-panel { height: 270px; flex-shrink: 0; display: flex; flex-direction: column; overflow: hidden; }
+.graph-side-empty { color: var(--t3); font-size: 12px; text-align: center; padding-top: 60px; line-height: 1.6; }
+.graph-side-empty i { font-size: 32px; opacity: .2; display: block; margin: 0 auto 10px; text-align: center; }
+.gside-title { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 2px; }
+.gside-type { font-size: 11px; color: var(--t3); font-family: var(--mono); margin-bottom: 14px; }
+.gside-row { padding: 8px 0; border-bottom: 1px solid var(--b1); }
+.gside-row:last-child { border-bottom: none; }
+.gside-label { font-size: 10px; color: var(--t3); font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
+.gside-val { font-size: 12px; color: var(--t1); line-height: 1.5; }
+.gside-val.mono { font-family: var(--mono); font-size: 11px; }
+.legend-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; flex-wrap: wrap; }
+.legend-row:last-child { margin-bottom: 0; }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: var(--t3); }
 </style>
 </head>
 <body>
@@ -783,12 +901,19 @@ html, body {
       <button class="ntab active" id="tab-investigate" onclick="switchView('investigate')">
         <i class="ti ti-search"></i> Investigate
       </button>
+      <button class="ntab" id="tab-graph" onclick="switchView('graph')">
+        <i class="ti ti-hierarchy-3"></i> Evidence Graph
+        <span class="badge" id="graph-badge">!</span>
+      </button>
       <button class="ntab" id="tab-lab" onclick="switchView('lab')">
         <i class="ti ti-cpu"></i> Agent Lab
         <span class="badge" id="lab-badge">!</span>
       </button>
     </div>
     <div class="topbar-right">
+      <div class="mem-chip" id="memChip" title="Agent working memory / context window">
+        <i class="ti ti-database"></i><span id="memChipText">No active context</span>
+      </div>
       <div class="status-chip">6 OSINT sources</div>
       <div class="status-chip live"><i class="ti ti-circle-filled" style="font-size:8px;margin-right:4px"></i>LLM online</div>
     </div>
@@ -819,6 +944,10 @@ html, body {
 
       <!-- agent log -->
       <div class="feed-panel">
+        <div class="panel-head"><i class="ti ti-route"></i>Investigation plan</div>
+        <div class="plan-list" id="planList" style="padding:8px 14px 12px;flex-shrink:0;border-bottom:1px solid var(--b1)">
+          <div style="color:var(--t3);font-family:var(--mono);font-size:11px;padding:4px 0">No active plan</div>
+        </div>
         <div class="panel-head"><i class="ti ti-activity"></i>Agent log</div>
         <div class="feed-list" id="feedList">
           <div style="color:var(--t3);font-family:var(--mono);font-size:11px;padding:6px 4px">
@@ -833,32 +962,32 @@ html, body {
           <div class="src-tile" id="st-whois">
             <div class="src-tile-name"><i class="ti ti-world"></i>WHOIS</div>
             <div class="src-val" id="sv-whois">—</div>
-            <div class="src-tile-meta" id="sm-whois"></div>
+            <div class="src-sub" id="ss-whois"></div>
           </div>
           <div class="src-tile" id="st-dns">
             <div class="src-tile-name"><i class="ti ti-server"></i>DNS</div>
             <div class="src-val" id="sv-dns">—</div>
-            <div class="src-tile-meta" id="sm-dns"></div>
+            <div class="src-sub" id="ss-dns"></div>
           </div>
           <div class="src-tile" id="st-vt">
             <div class="src-tile-name"><i class="ti ti-shield-check"></i>VirusTotal</div>
             <div class="src-val" id="sv-vt">—</div>
-            <div class="src-tile-meta" id="sm-vt"></div>
+            <div class="src-sub" id="ss-vt"></div>
           </div>
           <div class="src-tile" id="st-shodan">
             <div class="src-tile-name"><i class="ti ti-radar"></i>Shodan</div>
             <div class="src-val" id="sv-shodan">—</div>
-            <div class="src-tile-meta" id="sm-shodan"></div>
+            <div class="src-sub" id="ss-shodan"></div>
           </div>
           <div class="src-tile" id="st-otx">
             <div class="src-tile-name"><i class="ti ti-broadcast"></i>OTX</div>
             <div class="src-val" id="sv-otx">—</div>
-            <div class="src-tile-meta" id="sm-otx"></div>
+            <div class="src-sub" id="ss-otx"></div>
           </div>
           <div class="src-tile" id="st-feeds">
             <div class="src-tile-name"><i class="ti ti-list"></i>Feeds</div>
             <div class="src-val" id="sv-feeds">—</div>
-            <div class="src-tile-meta" id="sm-feeds"></div>
+            <div class="src-sub" id="ss-feeds"></div>
           </div>
         </div>
 
@@ -877,6 +1006,76 @@ html, body {
                 onkeydown="if(event.key==='Enter') sendGlobalChat()">
               <button class="btn-send" onclick="sendGlobalChat()"><i class="ti ti-send"></i></button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ VIEW: EVIDENCE GRAPH ═══════════ -->
+  <div class="view" id="v-graph">
+    <div class="lab-banner">
+      <div class="lab-ioc" id="graphIocBadge">Run an investigation first</div>
+      <div class="lab-hint">Drag to pan, scroll/pinch to zoom, click a node to inspect it — or ask the chat</div>
+    </div>
+    <div class="graph-body">
+      <div class="graph-controls">
+        <div class="gc-card">
+          <div class="gc-card-title">Node types</div>
+          <div class="gc-toggle-row">
+            <span class="gc-toggle-label"><span class="legend-dot" style="background:#FF5252"></span>Campaign / cluster</span>
+            <button class="gc-toggle on" id="gcCampaign" onclick="toggleGraphFilter(this)"></button>
+          </div>
+          <div class="gc-toggle-row">
+            <span class="gc-toggle-label"><span class="legend-dot" style="background:#FF7A5C"></span>Indicators (IP)</span>
+            <button class="gc-toggle on" id="gcIndicator" onclick="toggleGraphFilter(this)"></button>
+          </div>
+          <div class="gc-toggle-row">
+            <span class="gc-toggle-label"><span class="legend-dot" style="background:#4D9EFF"></span>Infrastructure</span>
+            <button class="gc-toggle on" id="gcInfra" onclick="toggleGraphFilter(this)"></button>
+          </div>
+        </div>
+        <div class="gc-card">
+          <div class="gc-card-title">Layout</div>
+          <button class="gc-btn" onclick="rebuildGraphLayout()"><i class="ti ti-refresh"></i>Rebuild layout</button>
+        </div>
+        <div class="gc-card">
+          <div class="gc-card-title">Legend</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#FF5252"></span><span class="legend-item">Malicious / campaign</span></div>
+          <div class="legend-row"><span class="legend-dot" style="background:#FFB84D"></span><span class="legend-item">Suspicious</span></div>
+          <div class="legend-row"><span class="legend-dot" style="background:#4D9EFF"></span><span class="legend-item">Contextual infra</span></div>
+          <div class="legend-row"><span class="legend-dot" style="background:#3A4D6A"></span><span class="legend-item">Hosting / neutral</span></div>
+        </div>
+      </div>
+      <div class="graph-canvas-wrap" id="graphCanvasWrap">
+        <canvas id="graphCanvasEl"></canvas>
+        <div class="graph-zoom-controls">
+          <div class="gzc-btn" onclick="graphZoom(1.25)" title="Zoom in"><i class="ti ti-plus"></i></div>
+          <div class="gzc-btn" onclick="graphZoom(0.8)" title="Zoom out"><i class="ti ti-minus"></i></div>
+          <div class="gzc-btn" onclick="graphResetView()" title="Reset view"><i class="ti ti-focus-2"></i></div>
+        </div>
+        <div class="graph-side-empty" id="graphEmptyHint" style="position:absolute;inset:0;padding-top:120px">
+          <i class="ti ti-affiliate"></i>
+          Run an investigation to build the evidence graph
+        </div>
+      </div>
+      <div class="graph-side">
+        <div class="graph-side-detail" id="graphSideDetail">
+          <div class="graph-side-empty">
+            <i class="ti ti-click"></i>
+            Select a node in the graph to see its details
+          </div>
+        </div>
+        <div class="graph-chat-panel">
+          <div class="ac-head"><i class="ti ti-message-2"></i>Ask about the graph</div>
+          <div class="ac-messages" id="graphChatMessages">
+            <div style="color:var(--t3);font-size:11px;padding:4px;font-family:var(--mono)">Run an investigation to start a conversation…</div>
+          </div>
+          <div class="ac-input-row">
+            <input class="ac-input" id="graphChatInput"
+              placeholder="Ask about a node, source, or the graph…"
+              onkeydown="if(event.key==='Enter') sendGraphChat()">
+            <button class="ac-send" onclick="sendGraphChat()"><i class="ti ti-send"></i></button>
           </div>
         </div>
       </div>
@@ -982,12 +1181,12 @@ const FEED_STEPS = [
 ];
 
 const SOURCE_UPDATES = {
-  whois:  { q: 900,  done: 1300, cls: 'done',    val: 'AS60781 · LeaseWeb NL\nReg: 2019-03-14', meta: 'Queried 0.4s · Evidence: 2', reliability: 'Medium', freshness: 'Live' },
-  dns:    { q: 1550, done: 2000, cls: 'done',    val: 'No PTR record\nNo hostname mapped', meta: 'Queried 0.5s · Evidence: 2', reliability: 'Medium', freshness: 'Live' },
-  vt:     { q: 2200, done: 2800, cls: 'flagged', val: '62/93 flagged\nC2 · malware dropper', meta: 'Queried 0.6s · Evidence: 4', reliability: 'High', freshness: '2 days' },
-  shodan: { q: 3000, done: 3600, cls: 'flagged', val: 'Ports 443,9001,9030\nTor relay confirmed', meta: 'Queried 0.6s · Evidence: 3', reliability: 'High', freshness: 'Live' },
-  otx:    { q: 3800, done: 4300, cls: 'flagged', val: 'APT: SOLARSHIFT\nConfidence: HIGH', meta: 'Queried 0.5s · Evidence: 4', reliability: 'High', freshness: '3 days' },
-  feeds:  { q: 4500, done: 5000, cls: 'done',    val: 'Emerging Threats\nAbuseCH Feodo listed', meta: 'Queried 0.4s · Evidence: 3', reliability: 'Medium', freshness: '11 days' },
+  whois:  { q: 900,  done: 1300, cls: 'done',    val: 'AS60781 · LeaseWeb NL\nReg: 2019-03-14',    rel: 'High',   fresh: '—',        ev: 2, ms: '410ms' },
+  dns:    { q: 1550, done: 2000, cls: 'done',    val: 'No PTR record\nNo hostname mapped',          rel: 'High',   fresh: 'Live',     ev: 2, ms: '380ms' },
+  vt:     { q: 2200, done: 2800, cls: 'flagged', val: '62/93 flagged\nC2 · malware dropper',        rel: 'High',   fresh: '2 days',   ev: 4, ms: '610ms' },
+  shodan: { q: 3000, done: 3600, cls: 'flagged', val: 'Ports 443,9001,9030\nTor relay confirmed',   rel: 'High',   fresh: '6 hours',  ev: 3, ms: '540ms' },
+  otx:    { q: 3800, done: 4300, cls: 'flagged', val: 'APT: SOLARSHIFT\nConfidence: HIGH',          rel: 'Medium', fresh: '3 days',   ev: 4, ms: '720ms' },
+  feeds:  { q: 4500, done: 5000, cls: 'done',    val: 'Emerging Threats\nAbuseCH Feodo listed',     rel: 'Medium', fresh: '11 days',  ev: 3, ms: '390ms' },
 };
 
 const REPORT_DATA = {
@@ -1009,6 +1208,101 @@ const REPORT_DATA = {
     { sev: 'info',     text: 'Import all 14 SOLARSHIFT campaign IOCs from OTX into MISP and internal threat intel platform.' },
   ]
 };
+
+/* ═══════════════════════════════════════════
+   NEW: OVERVIEW / PLAN / HYPOTHESES / CONFIDENCE / TIMELINE / GRAPH
+═══════════════════════════════════════════ */
+const INVESTIGATION_ID = 'INV-2026-0817-04A1';
+
+const PLAN_STEPS_BASE = [
+  'Identify IOC type & dispatch source agents',
+  'Query registry & DNS infrastructure (WHOIS, DNS)',
+  'Assess reputation & network exposure (VirusTotal, Shodan)',
+  'Correlate threat intelligence (OTX, Threat Feeds)',
+  'Correlate evidence & generate hypotheses',
+  'Generate final risk assessment',
+];
+const PLAN_STEPS_ITER2 = [
+  'Investigate related IOC cluster (SOLARSHIFT, 14 IOCs)',
+  'Update evidence graph & hypotheses',
+  'Recalculate risk & confidence',
+];
+let PLAN_STEPS = [];
+let planCurrentIndex = -1;
+
+let HYPOTHESES_DATA = [
+  { id: 'H1', name: 'Malicious C2 Infrastructure', confidence: 91, status: 'supported',
+    evidence: ['VirusTotal', 'Shodan', 'OTX', 'Threat Feeds'] },
+  { id: 'H2', name: 'Legitimate Tor Relay', confidence: 12, status: 'rejected',
+    evidence: ['High VT detections', 'OTX correlation', 'Multiple blocklists'] },
+  { id: 'H3', name: 'Compromised Hosting Infrastructure', confidence: 38, status: 'active',
+    evidence: ['LeaseWeb VPS context', 'Shared-hosting reuse pattern'] },
+];
+
+const CONFIDENCE_FACTORS = [
+  { label: 'Multi-source agreement — 4 of 6 sources flagged malicious', weight: '+34%', cls: 'pos' },
+  { label: 'Independent corroboration — VT, OTX and Feeds agree via separate methodologies', weight: '+22%', cls: 'pos' },
+  { label: 'Freshness — campaign activity observed 3 days ago', weight: '+14%', cls: 'pos' },
+  { label: 'Source reliability — weighted by each source\'s historical accuracy', weight: '+21%', cls: 'pos' },
+  { label: 'Conflicting evidence — not listed on Spamhaus', weight: '−4%', cls: 'neg' },
+  { label: 'Base rate — commercial VPS hosting prior', weight: 'prior', cls: 'neu' },
+];
+
+const EV_SUMMARY = { support: 14, ambig: 2, contra: 1 };
+const EV_TRACE = [
+  { src: 'VirusTotal',    text: '62/93 engines malicious' },
+  { src: 'Shodan',        text: 'Tor relay + suspicious self-signed TLS on 443' },
+  { src: 'OTX',           text: 'APT campaign correlation — SOLARSHIFT' },
+  { src: 'Threat Feeds',  text: '2 independent blocklist entries, 11 days' },
+  { src: 'Agent Assessment', text: 'HIGH RISK · 91% confidence' },
+];
+const CONFLICT_TEXT = 'Spamhaus: not listed. Absence from Spamhaus does not contradict the C2 hypothesis — Spamhaus focuses primarily on spam-related abuse, not C2 beaconing, so a clean Spamhaus record is expected even for confirmed C2 infrastructure.';
+
+let TIMELINE_DATA = [
+  { time: '16:21', label: 'Input received' },
+  { time: '16:21', label: 'Planning' },
+  { time: '16:22', label: 'WHOIS / DNS' },
+  { time: '16:22', label: 'VT / Shodan', bad: true },
+  { time: '16:23', label: 'Hypothesis updated' },
+  { time: '16:23', label: 'OTX pivot', bad: true },
+  { time: '16:24', label: 'Final assessment', bad: true },
+];
+const TIMELINE_ITER2 = [
+  { time: '16:31', label: 'Continue investigation' },
+  { time: '16:32', label: 'Related IOC queried', bad: true },
+  { time: '16:33', label: 'Risk recalculated', bad: true },
+];
+
+let investigationIterations = 1;
+
+/* Evidence / knowledge graph */
+const GRAPH_NODES = [
+  { id: 'campaign', x: 430, y: 55,  label: 'SOLARSHIFT', sub: 'APT campaign', color: 'var(--red)',
+    info: { type: 'Threat campaign', source: 'AlienVault OTX', evidence: 'Pulse validated by 47 contributors', timestamp: 'Last active 3 days ago', confidence: '91%', related: '14 IOCs · 1 IP · malware hashes', tech: 'Tor-relayed HTTPS beaconing, LOTL lateral movement' } },
+  { id: 'iocs', x: 220, y: 170, label: '14 related IOCs', sub: 'Campaign cluster', color: 'var(--amber)',
+    info: { type: 'IOC cluster', source: 'AlienVault OTX', evidence: '6 C2 IPs · 5 domains · 3 hashes', timestamp: 'Pulse created 11 days ago', confidence: '78% avg.', related: 'SOLARSHIFT campaign', tech: 'Shared infrastructure & TTP overlap' } },
+  { id: 'hashes', x: 640, y: 170, label: 'Malware hashes', sub: '3 dropper samples', color: 'var(--amber)',
+    info: { type: 'File indicators', source: 'AlienVault OTX', evidence: '3 SHA256 dropper samples linked to pulse', timestamp: 'First seen 9 days ago', confidence: '70%', related: 'SOLARSHIFT campaign', tech: 'Trojan downloader, staged payload delivery' } },
+  { id: 'ip', x: 430, y: 285, label: '185.220.101.47', sub: 'Primary indicator', color: 'var(--red)',
+    info: { type: 'IPv4 address', source: 'Investigation input', evidence: '18 evidence items across 6 sources', timestamp: 'Investigated 2026-08-17 16:24', confidence: '91%', related: 'AS60781 · SOLARSHIFT · Tor network', tech: 'Tor exit relay + C2 beaconing over TLS' } },
+  { id: 'tor', x: 690, y: 285, label: 'Tor Relay', sub: 'Ports 9001 / 9030', color: 'var(--amber)',
+    info: { type: 'Network service', source: 'Shodan', evidence: 'ORPort + DirPort active, self-signed TLS on 443', timestamp: 'Scanned 6 hours ago', confidence: '88%', related: '185.220.101.47', tech: 'Onion routing used to obscure true C2 endpoint' } },
+  { id: 'asn', x: 210, y: 400, label: 'AS60781', sub: 'ASN', color: 'var(--blue)',
+    info: { type: 'Autonomous System', source: 'WHOIS', evidence: 'Commercial VPS ASN, permissive abuse handling', timestamp: 'Registered 2019-03-14', confidence: '—', related: '185.220.101.47 · LeaseWeb NL', tech: 'IP range routing / hosting allocation' } },
+  { id: 'dns', x: 430, y: 400, label: 'No PTR record', sub: 'DNS profile', color: 'var(--blue)',
+    info: { type: 'DNS finding', source: 'DNS agent', evidence: 'No reverse DNS, no hostname, no MX', timestamp: 'Queried 6 hours ago', confidence: '—', related: '185.220.101.47', tech: 'Absence of reverse mapping typical of attacker infra' } },
+  { id: 'rep', x: 660, y: 400, label: 'VT 62/93', sub: 'Reputation', color: 'var(--red)',
+    info: { type: 'Reputation score', source: 'VirusTotal', evidence: '62 malicious verdicts, community score −85', timestamp: 'Last analysed 2 days ago', confidence: '95%', related: '185.220.101.47', tech: 'Multi-engine static & sandbox detection' } },
+  { id: 'leaseweb', x: 210, y: 520, label: 'LeaseWeb NL', sub: 'Hosting provider', color: 'var(--t3)',
+    info: { type: 'Hosting provider', source: 'WHOIS', evidence: 'Commercial VPS provider, frequently abused', timestamp: '—', confidence: '—', related: 'AS60781', tech: 'Fast provisioning, permissive abuse policy' } },
+];
+let GRAPH_EDGES = [
+  ['campaign', 'iocs', false], ['campaign', 'hashes', false], ['campaign', 'ip', true],
+  ['ip', 'tor', true], ['ip', 'asn', false], ['ip', 'dns', false], ['ip', 'rep', true],
+  ['asn', 'leaseweb', false],
+];
+const ITER2_GRAPH_NODE = { id: 'ioc7', x: 100, y: 285, label: 'IOC #7 — 91.219.238.12', sub: 'Related C2 IP', color: 'var(--red)',
+  info: { type: 'IPv4 address (related IOC)', source: 'OTX pivot', evidence: 'Same SOLARSHIFT cluster, VT 54/93 malicious', timestamp: 'Investigated 16:32', confidence: '87%', related: 'SOLARSHIFT · 185.220.101.47', tech: 'Secondary C2 node, same hosting ASN pattern' } };
 
 const AGENT_DATA = {
   whois: {
@@ -1225,277 +1519,566 @@ function addFeedItem(ic, msg) {
   list.scrollTop = list.scrollHeight;
 }
 
-function setSource(key, cls, val, meta) {
+function setSource(key, cls, val, sub) {
   document.getElementById('st-' + key).className = 'src-tile ' + cls;
   document.getElementById('sv-' + key).textContent = val;
-  const m = document.getElementById('sm-' + key);
-  if (m) m.textContent = meta || '';
+  const subEl = document.getElementById('ss-' + key);
+  if (subEl) subEl.textContent = sub || '';
 }
 
-/* ═══════════════════════════════════════════
-   NEW DATA: overview / plan / hypotheses / graph / confidence / conflicts
-═══════════════════════════════════════════ */
-const OVERVIEW_DATA = {
-  id: 'INV-2024-0817-003',
-  status: 'done', // running | review | done
-  statusLabel: 'Completed',
-  risk: 'HIGH', confidence: 91,
-  sourcesQueried: '6/6', evidenceItems: 18,
-  hypothesis: 'Active APT-attributed C2 infrastructure operating a dual-purpose Tor relay',
+/* ── Investigation Plan ── */
+function renderPlan() {
+  const list = document.getElementById('planList');
+  if (!PLAN_STEPS.length) {
+    list.innerHTML = '<div style="color:var(--t3);font-family:var(--mono);font-size:11px;padding:4px 0">No active plan</div>';
+    return;
+  }
+  list.innerHTML = PLAN_STEPS.map((label, i) => {
+    const cls = i < planCurrentIndex ? 'plan-done' : i === planCurrentIndex ? 'plan-current' : 'plan-pending';
+    const mark = i < planCurrentIndex ? '<i class="ti ti-check"></i>' : i === planCurrentIndex ? '<i class="ti ti-arrow-right"></i>' : '<i class="ti ti-circle"></i>';
+    return `<div class="plan-step ${cls}"><span class="plan-mark">${mark}</span><span class="plan-text">${label}</span></div>`;
+  }).join('');
+}
+function setPlanStep(i) { planCurrentIndex = i; renderPlan(); }
+
+/* ── Memory / context chip ── */
+function updateMemChip() {
+  const txt = document.getElementById('memChipText');
+  if (!investigationDone) { txt.textContent = 'No active context'; return; }
+  txt.textContent = `${REPORT_DATA.evidence.length} evidence items · ${HYPOTHESES_DATA.length} hypotheses · ${investigationIterations} iteration${investigationIterations > 1 ? 's' : ''}`;
+}
+
+/* ── Toast ── */
+function showToast(msg) {
+  let t = document.getElementById('expToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'expToast';
+    t.className = 'exp-toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function exportReport(fmt) {
+  if (!investigationDone) { showToast('Run an investigation first'); return; }
+  if (fmt === 'JSON') {
+    const payload = {
+      investigationId: INVESTIGATION_ID, ioc: DEMO_IOC, iterations: investigationIterations,
+      risk: REPORT_DATA.risk, confidence: REPORT_DATA.confidence,
+      hypotheses: HYPOTHESES_DATA, evidence: REPORT_DATA.evidence, actions: REPORT_DATA.actions,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = INVESTIGATION_ID + '.json';
+    a.click();
+    showToast('JSON export downloaded');
+  } else {
+    showToast(fmt + ' export is not wired up in this prototype — JSON export is fully functional.');
+  }
+}
+
+function toggleEvTrace() {
+  const el = document.getElementById('evTrace');
+  if (el) el.classList.toggle('show');
+}
+function toggleConflict() {
+  const el = document.getElementById('conflictBox');
+  if (el) el.classList.toggle('show');
+}
+
+/* ── Human-in-the-loop review ── */
+function reviewAction(action) {
+  const box = document.getElementById('reviewOutcome');
+  const btns = document.querySelectorAll('.review-btns .rbtn');
+  if (action === 'continue') { continueInvestigation(); return; }
+  btns.forEach(b => b.disabled = true);
+  let msg, cls;
+  if (action === 'approve') {
+    msg = '<i class="ti ti-circle-check" style="color:var(--teal)"></i> <b style="color:var(--teal)">Approved.</b> Recommended actions have been queued for execution by the analyst. The agent will not act autonomously — this remains a human-authorised decision.';
+    cls = 'background:var(--teal-dim);border:1px solid rgba(0,229,184,.25)';
+  } else if (action === 'modify') {
+    msg = '<i class="ti ti-edit" style="color:var(--amber)"></i> <b style="color:var(--amber)">Sent for modification.</b> The recommended action set has been returned to the analyst queue for editing before execution.';
+    cls = 'background:var(--amber-dim);border:1px solid rgba(255,184,77,.25)';
+  } else {
+    msg = '<i class="ti ti-circle-x" style="color:var(--red)"></i> <b style="color:var(--red)">Rejected.</b> No actions will be taken. The investigation remains logged for audit purposes only.';
+    cls = 'background:var(--red-dim);border:1px solid rgba(255,82,82,.25)';
+  }
+  box.innerHTML = msg;
+  box.style.cssText += cls;
+  box.classList.add('show');
+}
+
+/* ── Evidence / Knowledge Graph — force-directed canvas ── */
+const GRAPH_COLOR_MAP = { 'var(--red)': '#FF5252', 'var(--amber)': '#FFB84D', 'var(--blue)': '#4D9EFF', 'var(--teal)': '#00E5B8', 'var(--purple)': '#A78BFA', 'var(--t3)': '#3A4D6A' };
+const GRAPH_NODE_TYPE = { campaign: 'campaign', iocs: 'cluster', hashes: 'cluster', ip: 'indicator', rep: 'indicator', tor: 'infra', asn: 'infra', dns: 'infra', leaseweb: 'hosting', ioc7: 'indicator' };
+const GRAPH_TYPE_RADIUS = { campaign: 20, cluster: 14, indicator: 16, infra: 11, hosting: 9 };
+const GRAPH_FILTER_GROUPS = { campaign: ['campaign', 'cluster'], indicator: ['indicator'], infra: ['infra', 'hosting'] };
+
+let graphZoomState = { scale: 1, tx: 0, ty: 0 };
+let graphPNodes = [], graphPEdges = [];
+let graphSelectedId = null, graphHoveredId = null;
+let graphDraggingNode = null, graphDragMoved = false;
+let graphPanState = { active: false, startX: 0, startY: 0, startTx: 0, startTy: 0 };
+let graphAnimFrame = null, graphListenersReady = false, graphTick = 0;
+let lastSelectedGraphNode = null;
+
+function nodeColorHex(n) { return GRAPH_COLOR_MAP[n.color] || '#7A8EAF'; }
+
+function buildGraphPhysics() {
+  const wrap = document.getElementById('graphCanvasWrap');
+  const canvas = document.getElementById('graphCanvasEl');
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  canvas.width = W; canvas.height = H;
+  const allNodes = GRAPH_NODES.concat(investigationIterations > 1 ? [ITER2_GRAPH_NODE] : []);
+  graphPNodes = allNodes.map(n => ({
+    ...n,
+    type: GRAPH_NODE_TYPE[n.id] || 'infra',
+    r: GRAPH_TYPE_RADIUS[GRAPH_NODE_TYPE[n.id]] || 11,
+    x: (n.x / 900) * W + (Math.random() - 0.5) * 20,
+    y: (n.y / 620) * H + (Math.random() - 0.5) * 20,
+    vx: 0, vy: 0, alpha: 0,
+  }));
+  graphPEdges = GRAPH_EDGES.slice();
+  for (let i = 0; i < 50; i++) applyGraphForces();
+}
+
+function applyGraphForces() {
+  const wrap = document.getElementById('graphCanvasWrap');
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  const repulsion = 2600, springLen = 105, springK = 0.05, damping = 0.82;
+  graphPNodes.forEach(a => {
+    graphPNodes.forEach(b => {
+      if (a.id === b.id) return;
+      const dx = a.x - b.x, dy = a.y - b.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const force = repulsion / (dist * dist);
+      a.vx += (dx / dist) * force; a.vy += (dy / dist) * force;
+    });
+  });
+  graphPEdges.forEach(([s, t]) => {
+    const a = graphPNodes.find(n => n.id === s), b = graphPNodes.find(n => n.id === t);
+    if (!a || !b) return;
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const force = (dist - springLen) * springK;
+    const fx = (dx / dist) * force, fy = (dy / dist) * force;
+    if (a !== graphDraggingNode) { a.vx += fx; a.vy += fy; }
+    if (b !== graphDraggingNode) { b.vx -= fx; b.vy -= fy; }
+  });
+  graphPNodes.forEach(n => {
+    if (n === graphDraggingNode) return;
+    n.vx *= damping; n.vy *= damping;
+    n.x += n.vx; n.y += n.vy;
+    n.x = Math.max(n.r + 8, Math.min(W - n.r - 8, n.x));
+    n.y = Math.max(n.r + 8, Math.min(H - n.r - 8, n.y));
+  });
+}
+
+function graphFilterOn(type) {
+  const key = Object.keys(GRAPH_FILTER_GROUPS).find(k => GRAPH_FILTER_GROUPS[k].includes(type));
+  const btn = document.getElementById('gc' + key.charAt(0).toUpperCase() + key.slice(1));
+  return !btn || btn.classList.contains('on');
+}
+
+function drawGraph() {
+  const canvas = document.getElementById('graphCanvasEl');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.save();
+  ctx.translate(graphZoomState.tx, graphZoomState.ty);
+  ctx.scale(graphZoomState.scale, graphZoomState.scale);
+
+  const visible = graphPNodes.filter(n => graphFilterOn(n.type));
+  const visIds = new Set(visible.map(n => n.id));
+
+  graphPEdges.forEach(([s, t, bad]) => {
+    if (!visIds.has(s) || !visIds.has(t)) return;
+    const a = graphPNodes.find(n => n.id === s), b = graphPNodes.find(n => n.id === t);
+    if (!a || !b) return;
+    ctx.save();
+    ctx.globalAlpha = Math.min(a.alpha, b.alpha) * 0.85;
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+    ctx.strokeStyle = bad ? 'rgba(255,82,82,.5)' : 'rgba(255,255,255,.16)';
+    ctx.lineWidth = bad ? 1.6 : 1.2;
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  visible.forEach(n => {
+    const col = nodeColorHex(n);
+    const isSel = graphSelectedId === n.id, isHov = graphHoveredId === n.id;
+    const r = n.r + (isHov ? 2 : 0);
+    ctx.save();
+    ctx.globalAlpha = n.alpha;
+    if (isSel || n.type === 'campaign') { ctx.shadowColor = col; ctx.shadowBlur = isSel ? 20 : 10; }
+    ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = col + '33'; ctx.fill();
+    ctx.beginPath(); ctx.arc(n.x, n.y, r * 0.32 + 3, 0, Math.PI * 2);
+    ctx.fillStyle = col; ctx.fill();
+    if (isSel) { ctx.beginPath(); ctx.arc(n.x, n.y, r + 4, 0, Math.PI * 2); ctx.strokeStyle = col; ctx.lineWidth = 1.6; ctx.stroke(); }
+    ctx.shadowBlur = 0;
+    ctx.font = `500 11px 'IBM Plex Mono', monospace`;
+    ctx.fillStyle = isHov || isSel ? '#E8EDF7' : '#7A8EAF';
+    ctx.textAlign = 'center';
+    ctx.fillText(n.label, n.x, n.y + r + 15);
+    ctx.font = `9px 'IBM Plex Mono', monospace`;
+    ctx.fillStyle = '#3A4D6A';
+    ctx.fillText(n.sub, n.x, n.y + r + 27);
+    ctx.restore();
+  });
+
+  ctx.restore();
+}
+
+function animateGraph() {
+  if (graphAnimFrame) cancelAnimationFrame(graphAnimFrame);
+  graphTick = 0;
+  function frame() {
+    const panel = document.getElementById('v-graph');
+    if (!panel || !panel.classList.contains('active')) { graphAnimFrame = null; return; }
+    if (graphTick < 45) { applyGraphForces(); graphTick++; }
+    graphPNodes.forEach(n => { n.alpha = Math.min(1, n.alpha + 0.06); });
+    drawGraph();
+    graphAnimFrame = requestAnimationFrame(frame);
+  }
+  graphAnimFrame = requestAnimationFrame(frame);
+}
+
+function rebuildGraphLayout() {
+  if (!investigationDone) { showToast('Run an investigation first'); return; }
+  buildGraphPhysics();
+  graphSelectedId = null;
+  animateGraph();
+  showToast('Layout rebuilt');
+}
+
+function toggleGraphFilter(btn) { btn.classList.toggle('on'); drawGraph(); }
+
+function graphToCanvasCoords(clientX, clientY) {
+  const canvas = document.getElementById('graphCanvasEl');
+  const rect = canvas.getBoundingClientRect();
+  const cx = clientX - rect.left, cy = clientY - rect.top;
+  return { x: (cx - graphZoomState.tx) / graphZoomState.scale, y: (cy - graphZoomState.ty) / graphZoomState.scale };
+}
+function graphNodeAt(gx, gy) {
+  return graphPNodes.slice().reverse().find(n => graphFilterOn(n.type) && Math.hypot(gx - n.x, gy - n.y) <= n.r + 6);
+}
+
+function graphZoom(factor) {
+  graphZoomState.scale = Math.min(2.5, Math.max(0.35, graphZoomState.scale * factor));
+  drawGraph();
+}
+function graphResetView() {
+  graphZoomState = { scale: 1, tx: 0, ty: 0 };
+  drawGraph();
+}
+
+function attachGraphPanZoomOnce() {
+  if (graphListenersReady) return;
+  const wrap = document.getElementById('graphCanvasWrap');
+
+  const down = (clientX, clientY) => {
+    const g = graphToCanvasCoords(clientX, clientY);
+    const hit = graphNodeAt(g.x, g.y);
+    graphDragMoved = false;
+    if (hit) {
+      graphDraggingNode = hit;
+      wrap.classList.add('dragnode');
+    } else {
+      graphPanState.active = true; graphPanState.startX = clientX; graphPanState.startY = clientY;
+      graphPanState.startTx = graphZoomState.tx; graphPanState.startTy = graphZoomState.ty;
+      wrap.classList.add('panning');
+    }
+  };
+  const move = (clientX, clientY) => {
+    if (graphDraggingNode) {
+      graphDragMoved = true;
+      const g = graphToCanvasCoords(clientX, clientY);
+      graphDraggingNode.x = g.x; graphDraggingNode.y = g.y;
+      graphDraggingNode.vx = 0; graphDraggingNode.vy = 0;
+      drawGraph();
+      return;
+    }
+    if (graphPanState.active) {
+      graphZoomState.tx = graphPanState.startTx + (clientX - graphPanState.startX);
+      graphZoomState.ty = graphPanState.startTy + (clientY - graphPanState.startY);
+      drawGraph();
+      return;
+    }
+    const g = graphToCanvasCoords(clientX, clientY);
+    const hit = graphNodeAt(g.x, g.y);
+    const newHover = hit ? hit.id : null;
+    if (newHover !== graphHoveredId) { graphHoveredId = newHover; wrap.style.cursor = hit ? 'pointer' : 'grab'; drawGraph(); }
+  };
+  const up = (clientX, clientY) => {
+    if (graphDraggingNode && !graphDragMoved) selectGraphNode(graphDraggingNode.id);
+    else if (graphDraggingNode && graphDragMoved) {
+      const g = graphToCanvasCoords(clientX, clientY);
+      const hit = graphNodeAt(g.x, g.y);
+      if (hit && hit.id === graphDraggingNode.id) selectGraphNode(hit.id);
+    }
+    graphDraggingNode = null;
+    graphPanState.active = false;
+    wrap.classList.remove('panning', 'dragnode');
+  };
+
+  wrap.addEventListener('mousedown', e => down(e.clientX, e.clientY));
+  window.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+  window.addEventListener('mouseup', e => up(e.clientX, e.clientY));
+  wrap.addEventListener('wheel', e => { e.preventDefault(); graphZoom(e.deltaY < 0 ? 1.1 : 0.9); }, { passive: false });
+  wrap.addEventListener('touchstart', e => { if (e.touches.length === 1) down(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+  wrap.addEventListener('touchmove', e => { if (e.touches.length === 1) move(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+  wrap.addEventListener('touchend', e => { const t = e.changedTouches[0]; up(t.clientX, t.clientY); });
+  graphListenersReady = true;
+}
+
+function initGraph() {
+  document.getElementById('graphEmptyHint').style.display = 'none';
+  graphZoomState = { scale: 1, tx: 0, ty: 0 };
+  graphSelectedId = null; graphHoveredId = null;
+  buildGraphPhysics();
+  attachGraphPanZoomOnce();
+  animateGraph();
+  document.getElementById('graphIocBadge').textContent = 'IOC: ' + DEMO_IOC;
+  document.getElementById('graph-badge').classList.add('show');
+  document.getElementById('graphChatMessages').innerHTML = '';
+  addGraphChatBubble('agent', `Evidence graph built for <strong style="color:var(--teal)">${DEMO_IOC}</strong> — ${graphPNodes.length} nodes across ${graphPEdges.length} relationships. Drag nodes or the background to move things around, scroll to zoom, click a node, or ask me about SOLARSHIFT, the IP, ASN, or Tor relay.`);
+}
+
+function selectGraphNode(id) {
+  const n = graphPNodes.find(x => x.id === id);
+  if (!n) return;
+  lastSelectedGraphNode = n;
+  graphSelectedId = id;
+  drawGraph();
+  const info = n.info;
+  document.getElementById('graphSideDetail').innerHTML = `
+    <div class="gside-title">${n.label}</div>
+    <div class="gside-type">${info.type}</div>
+    <div class="gside-row"><div class="gside-label">Source</div><div class="gside-val">${info.source}</div></div>
+    <div class="gside-row"><div class="gside-label">Evidence</div><div class="gside-val">${info.evidence}</div></div>
+    <div class="gside-row"><div class="gside-label">Timestamp</div><div class="gside-val mono">${info.timestamp}</div></div>
+    <div class="gside-row"><div class="gside-label">Confidence</div><div class="gside-val mono">${info.confidence}</div></div>
+    <div class="gside-row"><div class="gside-label">Related indicators</div><div class="gside-val">${info.related}</div></div>
+    <div class="gside-row"><div class="gside-label">Technology / TTP</div><div class="gside-val">${info.tech}</div></div>`;
+  addGraphChatBubble('agent', `Selected <strong style="color:var(--teal)">${n.label}</strong> (${info.type}). ${info.evidence} — confidence ${info.confidence}. Ask me for more detail on this node.`);
+}
+
+/* ── Evidence Graph chat ── */
+const GRAPH_CHAT_RESPONSES = {
+  'solarshift': 'SOLARSHIFT is the APT campaign this IP is attributed to, sourced from AlienVault OTX with 47 independent contributors validating the pulse. It links 14 related IOCs including additional C2 IPs, delivery domains and malware hashes.',
+  'tor': 'The Tor relay node confirms ports 9001 (ORPort) and 9030 (DirPort) are active on this IP, meaning traffic is being onion-routed. This is used to obscure the true destination of C2 traffic.',
+  'asn': 'AS60781 is LeaseWeb Netherlands BV — a commercial VPS provider with permissive abuse handling, which raises the base-rate probability of malicious use for IPs in this range.',
+  'confidence': `Overall agent confidence currently sits at ${REPORT_DATA.confidence}%, weighted from multi-source agreement, independent corroboration, freshness of activity, and source reliability.`,
+  'pivot': 'The "Continue Investigation" action on the report pivots to a related IOC from the SOLARSHIFT cluster and adds a new node to this graph — try it from the Analyst Review card on the Investigate tab.',
+  'zoom': 'Scroll or pinch on the canvas to zoom, drag to pan, or use the + / − / reset controls in the top-right corner of the graph.',
+  'pan': 'Click and drag anywhere on the empty canvas to pan around the graph. It won\'t interfere with clicking a node.',
 };
+function addGraphChatBubble(type, text) {
+  const c = document.getElementById('graphChatMessages');
+  const d = document.createElement('div');
+  d.className = 'ac-bubble ' + (type === 'user' ? 'user' : 'agent');
+  d.innerHTML = `<div class="ac-who ${type === 'user' ? 'u' : 'a'}">${type === 'user' ? 'Analyst' : 'Agent'}</div><div class="ac-msg-text">${text}</div>`;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+function sendGraphChat() {
+  if (!investigationDone) {
+    document.getElementById('graphChatMessages').innerHTML = '<div style="color:var(--amber);font-size:11px;padding:4px;font-family:var(--mono)">⚠ Run an investigation first to build the graph.</div>';
+    return;
+  }
+  const inp = document.getElementById('graphChatInput');
+  const q = inp.value.trim(); if (!q) return;
+  addGraphChatBubble('user', q);
+  inp.value = '';
+  const lq = q.toLowerCase();
+  const match = Object.entries(GRAPH_CHAT_RESPONSES).find(([k]) => lq.includes(k));
+  let resp;
+  if (match) resp = match[1];
+  else if (lastSelectedGraphNode) resp = `Looking at <strong style="color:var(--teal)">${lastSelectedGraphNode.label}</strong>: ${lastSelectedGraphNode.info.evidence} (confidence ${lastSelectedGraphNode.info.confidence}). Click another node, or ask about SOLARSHIFT, the IP, ASN, or Tor relay.`;
+  else resp = `This graph maps ${GRAPH_NODES.length + (investigationIterations > 1 ? 1 : 0)} entities around ${DEMO_IOC}. Click any node to inspect it, or ask me about SOLARSHIFT, the IP, ASN, or Tor relay.`;
+  setTimeout(() => addGraphChatBubble('agent', resp), 500);
+}
 
-const PLAN_DATA = [
-  { label: 'Identify IOC type', state: 'done' },
-  { label: 'Query reputation (VirusTotal)', state: 'done' },
-  { label: 'Resolve infrastructure (WHOIS + DNS)', state: 'done' },
-  { label: 'Check threat feeds', state: 'done' },
-  { label: 'Investigate campaign association (OTX)', state: 'done' },
-  { label: 'Correlate related IOCs', state: 'current' },
-  { label: 'Generate final assessment', state: 'todo' },
-];
+/* ── Continue Investigation (iteration 2) ── */
+function continueInvestigation() {
+  if (investigationIterations > 1) { showToast('Already investigated related IOC cluster'); return; }
+  const btns = document.querySelectorAll('.review-btns .rbtn');
+  btns.forEach(b => b.disabled = true);
+  const box = document.getElementById('reviewOutcome');
+  box.innerHTML = '<i class="ti ti-loader" style="animation:spin 1s linear infinite"></i> Agent is pivoting to related IOC <b>91.219.238.12</b> from the SOLARSHIFT cluster…';
+  box.style.cssText += 'background:var(--purple-dim);border:1px solid rgba(167,139,250,.25)';
+  box.classList.add('show');
 
-const TIMELINE_DATA = [
-  { time: '16:21', label: 'Input received', sub: '185.220.101.47 submitted for investigation' },
-  { time: '16:21', label: 'Planning', sub: 'Orchestrator dispatched 6 parallel source agents' },
-  { time: '16:22', label: 'WHOIS / DNS', sub: 'Infrastructure resolution complete' },
-  { time: '16:22', label: 'VT / Shodan', sub: 'Reputation + service scan returned' },
-  { time: '16:23', label: 'Hypothesis updated', sub: 'C2 hypothesis strengthened to 91%' },
-  { time: '16:23', label: 'OTX pivot', sub: 'Campaign correlation — SOLARSHIFT' },
-  { time: '16:24', label: 'Final assessment', sub: 'HIGH RISK · 91% confidence' },
-];
+  PLAN_STEPS = PLAN_STEPS_BASE.concat(PLAN_STEPS_ITER2);
+  setPlanStep(6);
+  addFeedItem('ic-think', '<b>Orchestrator</b> — replanning: 14 related IOCs identified, selecting highest-priority pivot.');
 
-const HYPOTHESES_DATA = [
-  { name: 'H1 — Malicious C2 Infrastructure', conf: 91, status: 'supported', evidence: ['VirusTotal', 'Shodan', 'OTX', 'Threat feeds'] },
-  { name: 'H2 — Legitimate Tor Relay', conf: 12, status: 'rejected', evidence: ['High VT detections (against)', 'OTX correlation (against)', 'Blocklists (against)'] },
-  { name: 'H3 — Compromised Hosting Infrastructure', conf: 38, status: 'pending', evidence: ['WHOIS hosting context', 'Awaiting related-IOC pivot'] },
-];
-
-const CONFIDENCE_FACTORS = [
-  { name: 'Multi-source agreement (6/6 sources aligned)', tag: '+', cls: 'pos' },
-  { name: 'Freshness (active 3 days ago)', tag: '+', cls: 'pos' },
-  { name: 'Independent corroboration (VT + OTX + feeds)', tag: '+', cls: 'pos' },
-  { name: 'Conflicting evidence (Spamhaus not listed)', tag: '−', cls: 'neg' },
-  { name: 'Source reliability weighting applied', tag: '~', cls: 'neu' },
-];
-
-const CONFLICT_DATA = {
-  supporting: 14, ambiguous: 2, contradictory: 1,
-  items: [
-    { label: 'Spamhaus: Not listed', explain: 'Absence from Spamhaus does not contradict the C2 hypothesis because Spamhaus focuses primarily on spam-related abuse, not C2/Tor infrastructure. This is treated as a low-weight, non-contradictory signal.' }
-  ]
-};
-
-const TRACE_DATA = [
-  { src: 'VirusTotal', text: '62/93 malicious' },
-  { src: 'Shodan', text: 'Tor relay + suspicious TLS' },
-  { src: 'OTX', text: 'APT campaign correlation' },
-  { src: 'Threat Feeds', text: '2 independent listings' },
-  { src: 'Agent Assessment', text: 'HIGH RISK · 91% confidence' },
-];
+  timers.push(setTimeout(() => { addFeedItem('ic-query', '<b>OTX pivot</b> — investigating related IOC 91.219.238.12 (same SOLARSHIFT cluster).'); setPlanStep(7); }, 900));
+  timers.push(setTimeout(() => { addFeedItem('ic-bad', '<b>Correlation</b> — 91.219.238.12 shares ASN pattern and campaign TTPs. VT 54/93 malicious.'); }, 1800));
+  timers.push(setTimeout(() => {
+    addFeedItem('ic-think', '<b>Reasoning module</b> — updating hypotheses and graph with new node.');
+    setPlanStep(8);
+    investigationIterations = 2;
+    HYPOTHESES_DATA[0].confidence = 96;
+    HYPOTHESES_DATA[0].evidence.push('Related IOC #7 corroboration');
+    HYPOTHESES_DATA[2].confidence = 22;
+    GRAPH_EDGES = GRAPH_EDGES.concat([['campaign', 'ioc7', true]]);
+    REPORT_DATA.confidence = 96;
+    REPORT_DATA.evidence.push({ src: 'OTX pivot', text: 'Related IOC 91.219.238.12 (SOLARSHIFT cluster) independently confirms C2 pattern with 54/93 VT detections and matching ASN.', tag: 'malicious', tagCls: 'tag-mal' });
+    TIMELINE_DATA = TIMELINE_DATA.concat(TIMELINE_ITER2);
+  }, 2600));
+  timers.push(setTimeout(() => {
+    addFeedItem('ic-bad', '<b>Assessment updated</b> — Confidence raised to 96%. Second campaign node confirmed active.');
+    setPlanStep(9);
+    buildReport(REPORT_DATA);
+    initGraph();
+    updateMemChip();
+    box.innerHTML = '<i class="ti ti-circle-check" style="color:var(--purple)"></i> <b style="color:var(--purple)">Iteration 2 complete.</b> Investigated related IOC 91.219.238.12 — confidence raised to <b style="color:var(--purple)">96%</b>. Evidence graph and hypotheses updated. See the Evidence Graph tab for the new node.';
+    box.style.cssText += 'background:var(--purple-dim);border:1px solid rgba(167,139,250,.25)';
+  }, 3400));
+}
 
 function buildReport(r) {
   const scroll = document.getElementById('reportScroll');
   scroll.innerHTML = '';
 
-  // ── 1. Investigation overview panel ──
-  const ov = OVERVIEW_DATA;
-  const ovPanel = document.createElement('div');
-  ovPanel.className = 'ov-panel';
-  ovPanel.innerHTML = `
-    <div class="ov-top">
-      <span class="ov-id">${ov.id} &nbsp;·&nbsp; ${DEMO_IOC} &nbsp;·&nbsp; IPv4 Address</span>
-      <span class="ov-status ${ov.status}">${ov.statusLabel}</span>
+  const statusCls = 'ov-status-completed', statusLbl = 'Completed';
+
+  // 1. Overview panel
+  const ov = document.createElement('div');
+  ov.className = 'rcard ov-card';
+  ov.innerHTML = `
+    <div class="ov-top-row">
+      <div class="ov-id">Investigation <b>${INVESTIGATION_ID}</b>${investigationIterations > 1 ? '<span class="iter-badge"><i class="ti ti-refresh"></i>Iteration ' + investigationIterations + '</span>' : ''}</div>
+      <span class="ov-status-pill ${statusCls}">${statusLbl}</span>
     </div>
     <div class="ov-grid">
-      <div class="ov-stat"><div class="ov-stat-label">Risk</div><div class="ov-stat-val risk-hi">${ov.risk}</div></div>
-      <div class="ov-stat"><div class="ov-stat-label">Confidence</div><div class="ov-stat-val">${ov.confidence}%</div></div>
-      <div class="ov-stat"><div class="ov-stat-label">Sources queried</div><div class="ov-stat-val">${ov.sourcesQueried}</div></div>
-      <div class="ov-stat"><div class="ov-stat-label">Evidence items</div><div class="ov-stat-val">${ov.evidenceItems}</div></div>
+      <div class="ov-item"><div class="ov-item-label">Threat input</div><div class="ov-item-val mono" style="font-family:var(--mono);font-size:12px">${DEMO_IOC}</div></div>
+      <div class="ov-item"><div class="ov-item-label">Risk</div><div class="ov-item-val accent-red">${r.risk}</div></div>
+      <div class="ov-item"><div class="ov-item-label">Confidence</div><div class="ov-item-val accent-teal">${r.confidence}%</div></div>
+      <div class="ov-item"><div class="ov-item-label">Sources queried</div><div class="ov-item-val">6 / 6</div></div>
+      <div class="ov-item"><div class="ov-item-label">Evidence items</div><div class="ov-item-val">${r.evidence.length}</div></div>
+      <div class="ov-item"><div class="ov-item-label">Hypotheses</div><div class="ov-item-val">${HYPOTHESES_DATA.length}</div></div>
+      <div class="ov-item"><div class="ov-item-label">Investigation iterations</div><div class="ov-item-val">${investigationIterations}</div></div>
+      <div class="ov-item"><div class="ov-item-label">IOC type</div><div class="ov-item-val">IPv4 address</div></div>
     </div>
-    <div class="ov-hypo"><b>Current hypothesis:</b> ${ov.hypothesis}</div>`;
-  scroll.appendChild(ovPanel);
+    <div class="ov-hypothesis"><b>Current hypothesis:</b> H1 — Malicious C2 Infrastructure (${HYPOTHESES_DATA[0].confidence}% confidence, supported)</div>`;
+  scroll.appendChild(ov);
 
-  // risk + title
+  // 2. risk + title
   const row = document.createElement('div');
   row.className = 'risk-row';
   row.innerHTML = `<span class="risk-pill rp-${r.risk}">${r.risk} RISK</span><div class="risk-title">${r.title}</div>`;
   scroll.appendChild(row);
 
-  // confidence
+  // 3. confidence + factors
   const conf = document.createElement('div');
-  conf.className = 'conf-row';
-  conf.innerHTML = `<span class="conf-label">Agent confidence</span><div class="conf-track"><div class="conf-fill" id="confFill" style="width:0%"></div></div><span class="conf-pct">${r.confidence}%</span>`;
+  conf.className = 'rcard';
+  conf.innerHTML = `<div class="rcard-head"><i class="ti ti-gauge"></i>Confidence model</div>
+    <div class="conf-row"><span class="conf-label">Agent confidence</span><div class="conf-track"><div class="conf-fill" id="confFill" style="width:0%"></div></div><span class="conf-pct">${r.confidence}%</span></div>
+    <div class="conf-factors">${CONFIDENCE_FACTORS.map(f => `<div class="cf-row"><span class="cf-tag cf-${f.cls}">${f.cls === 'pos' ? '+' : f.cls === 'neg' ? '−' : '·'}</span><span class="cf-label">${f.label}</span><span class="cf-weight">${f.weight}</span></div>`).join('')}</div>`;
   scroll.appendChild(conf);
-  setTimeout(() => {
-    const f = document.getElementById('confFill');
-    if (f) f.style.width = r.confidence + '%';
-  }, 80);
+  setTimeout(() => { const f = document.getElementById('confFill'); if (f) f.style.width = r.confidence + '%'; }, 80);
 
-  // summary
+  // 4. summary
   const sumCard = document.createElement('div');
   sumCard.className = 'rcard';
   sumCard.innerHTML = `<div class="rcard-head"><i class="ti ti-file-description"></i>Threat summary</div><div class="summary-text">${r.summary}</div>`;
   scroll.appendChild(sumCard);
 
-  // ── 2. Investigation plan ──
-  const planCard = document.createElement('div');
-  planCard.className = 'rcard';
-  planCard.innerHTML = '<div class="rcard-head"><i class="ti ti-route"></i>Investigation plan</div><div class="plan-list">' +
-    PLAN_DATA.map(p => {
-      const ic = p.state === 'done' ? '<i class="ti ti-check"></i>' : p.state === 'current' ? '<i class="ti ti-arrow-right"></i>' : '<i class="ti ti-circle"></i>';
-      return `<div class="plan-item p${p.state}"><span class="plan-ic">${ic}</span>${p.label}</div>`;
-    }).join('') + '</div>';
-  scroll.appendChild(planCard);
+  // 5. hypotheses
+  const hypCard = document.createElement('div');
+  hypCard.className = 'rcard';
+  hypCard.innerHTML = '<div class="rcard-head"><i class="ti ti-git-branch"></i>Investigation hypotheses</div>' +
+    HYPOTHESES_DATA.map(h => {
+      const fillCls = h.status === 'supported' ? 'hf-sup' : h.status === 'rejected' ? 'hf-rej' : 'hf-act';
+      const badgeCls = h.status === 'supported' ? 'hyp-supported' : h.status === 'rejected' ? 'hyp-rejected' : 'hyp-active';
+      const badgeLbl = h.status === 'supported' ? '🟢 Supported' : h.status === 'rejected' ? '🔴 Weak / Rejected' : '🟡 Under investigation';
+      return `<div class="hyp-item">
+        <div class="hyp-head"><span class="hyp-id">${h.id}</span><span class="hyp-name">${h.name}</span><span class="hyp-status-badge ${badgeCls}">${badgeLbl}</span></div>
+        <div class="hyp-track"><div class="hyp-fill ${fillCls}" style="width:${h.confidence}%"></div></div>
+        <div class="hyp-conf-txt">Confidence: ${h.confidence}%</div>
+        <div class="hyp-tags">${h.evidence.map(e => `<span class="hyp-tag">${e}</span>`).join('')}</div>
+      </div>`;
+    }).join('');
+  scroll.appendChild(hypCard);
 
-  // ── 3. Investigation timeline ──
+  // 6. evidence chain + summary + trace + conflict
+  const evCard = document.createElement('div');
+  evCard.className = 'rcard';
+  evCard.innerHTML = '<div class="rcard-head"><i class="ti ti-link"></i>Evidence chain — ' + r.evidence.length + ' items</div>' +
+    `<div class="ev-summary-row">
+      <span class="ev-sum-chip support"><i class="ti ti-circle-check" style="font-size:11px"></i>Supporting: ${EV_SUMMARY.support}</span>
+      <span class="ev-sum-chip ambig"><i class="ti ti-help-circle" style="font-size:11px"></i>Ambiguous: ${EV_SUMMARY.ambig}</span>
+      <span class="ev-sum-chip contra" onclick="toggleConflict()"><i class="ti ti-alert-triangle" style="font-size:11px"></i>Contradictory: ${EV_SUMMARY.contra}</span>
+    </div>
+    <div class="conflict-box" id="conflictBox">${CONFLICT_TEXT}</div>` +
+    r.evidence.map(e => `<div class="ev-row"><span class="ev-src-badge">${e.src}</span><span class="ev-body">${e.text}<span class="ev-tag ${e.tagCls}">${e.tag}</span></span></div>`).join('') +
+    `<div class="ev-row clickable" onclick="toggleEvTrace()" style="cursor:pointer">
+      <span class="ev-src-badge" style="background:var(--purple-dim);color:var(--purple);border-color:rgba(167,139,250,.3)">Why?</span>
+      <span class="ev-body">Click to see the evidence → conclusion traceability chain for this ${r.risk} RISK assessment.</span>
+    </div>
+    <div class="ev-trace" id="evTrace">${EV_TRACE.map((s, i) => `<div class="ev-trace-step">${i > 0 ? '<i class="ti ti-corner-down-right"></i>' : '<i class="ti ti-point"></i>'}<span><b>${s.src}</b> — ${s.text}</span></div>`).join('')}</div>`;
+  scroll.appendChild(evCard);
+
+  // 7. timeline
   const tlCard = document.createElement('div');
   tlCard.className = 'rcard';
   tlCard.innerHTML = '<div class="rcard-head"><i class="ti ti-timeline"></i>Investigation timeline</div>' +
-    TIMELINE_DATA.map((t, i) => `
-      <div class="tl-row">
-        <div class="tl-time">${t.time}</div>
-        <div class="tl-line-wrap"><div class="tl-dot"></div>${i < TIMELINE_DATA.length - 1 ? '<div class="tl-connector"></div>' : ''}</div>
-        <div class="tl-body"><div class="tl-label">${t.label}</div><div class="tl-sub">${t.sub}</div></div>
-      </div>`).join('');
+    `<div class="tl-row">${TIMELINE_DATA.map(t => `<div class="tl-node ${t.bad ? 'tl-bad' : ''}"><div class="tl-line"></div><div class="tl-dot"></div><div class="tl-time">${t.time}</div><div class="tl-label">${t.label}</div></div>`).join('')}</div>`;
   scroll.appendChild(tlCard);
 
-  // ── 4. Hypotheses ──
-  const hypCard = document.createElement('div');
-  hypCard.className = 'rcard';
-  hypCard.innerHTML = '<div class="rcard-head"><i class="ti ti-bulb"></i>Investigation hypotheses</div>' +
-    HYPOTHESES_DATA.map(h => `
-      <div class="hyp-card">
-        <div class="hyp-head"><span class="hyp-name">${h.name}</span><span class="hyp-status ${h.status}">${h.status === 'supported' ? '🟢 Supported' : h.status === 'rejected' ? '🔴 Rejected' : '🟡 Under investigation'}</span></div>
-        <div class="hyp-conf-row"><div class="hyp-conf-track"><div class="hyp-conf-fill" style="width:${h.conf}%;background:${h.status === 'rejected' ? 'var(--red)' : h.status === 'pending' ? 'var(--amber)' : 'var(--teal)'}"></div></div><span class="hyp-conf-pct">${h.conf}%</span></div>
-        <div class="hyp-evidence">${h.evidence.map(e => `<span class="hyp-ev-chip">${e}</span>`).join('')}</div>
-      </div>`).join('');
-  scroll.appendChild(hypCard);
-
-  // ── 5. Evidence / knowledge graph (simplified) ──
-  const graphCard = document.createElement('div');
-  graphCard.className = 'rcard';
-  graphCard.innerHTML = `
-    <div class="rcard-head with-badge"><span><i class="ti ti-affiliate"></i>Evidence graph</span><span class="rcard-badge">click a node in the real build to inspect it</span></div>
-    <div class="graph-wrap">
-      <div class="gnode gcenter">SOLARSHIFT</div>
-      <div class="gvline"></div>
-      <div class="grow">
-        <div class="gbranch"><div class="gnode gleaf">14 related IOCs</div></div>
-        <div class="gbranch"><div class="gnode gleaf">Malware hashes</div></div>
-      </div>
-      <div class="gvline"></div>
-      <div class="gnode gip">185.220.101.47</div>
-      <div class="gvline"></div>
-      <div class="gnode gleaf" style="margin-bottom:6px">Tor Relay</div>
-      <div class="grow">
-        <div class="gbranch"><div class="gnode gleaf">ASN → AS60781 (LeaseWeb)</div></div>
-        <div class="gbranch"><div class="gnode gleaf">DNS → No PTR</div></div>
-        <div class="gbranch"><div class="gnode gleaf">Reputation → VT 62/93</div></div>
-      </div>
-    </div>
-    <div class="graph-hint">Full build: Neo4j-backed graph with clickable nodes (source, evidence, timestamp, confidence, related indicators)</div>`;
-  scroll.appendChild(graphCard);
-
-  // evidence
-  const evCard = document.createElement('div');
-  evCard.className = 'rcard';
-  evCard.innerHTML = '<div class="rcard-head"><i class="ti ti-link"></i>Evidence chain — ' + r.evidence.length + ' sources</div>' +
-    r.evidence.map(e => `<div class="ev-row"><span class="ev-src-badge">${e.src}</span><span class="ev-body">${e.text}<span class="ev-tag ${e.tagCls}">${e.tag}</span></span></div>`).join('') +
-    `<div class="trace-toggle" onclick="toggleTrace(this)"><i class="ti ti-chevron-right"></i> Why HIGH RISK? — show traceability chain</div>
-    <div class="trace-chain">${TRACE_DATA.map((t, i) => `<div class="trace-step"><b>${t.src}</b> — ${t.text}</div>${i < TRACE_DATA.length - 1 ? '<div class="trace-arrow">↓</div>' : ''}`).join('')}</div>`;
-  scroll.appendChild(evCard);
-
-  // ── conflicting / ambiguous evidence ──
-  const conflictCard = document.createElement('div');
-  conflictCard.className = 'rcard';
-  const cd = CONFLICT_DATA;
-  conflictCard.innerHTML = `
-    <div class="rcard-head"><i class="ti ti-scale"></i>Evidence summary</div>
-    <div class="conflict-summary">
-      <span class="cs-item">🟢 Supporting: <b>${cd.supporting}</b></span>
-      <span class="cs-item">🟡 Ambiguous: <b>${cd.ambiguous}</b></span>
-      <span class="cs-item">🔴 Contradictory: <b>${cd.contradictory}</b></span>
-    </div>
-    ${cd.items.map(it => `
-      <div class="conflict-row">
-        <div class="cr-head" onclick="this.nextElementSibling.classList.toggle('open')"><i class="ti ti-chevron-right"></i> ${it.label}</div>
-        <div class="conflict-explain">${it.explain}</div>
-      </div>`).join('')}`;
-  scroll.appendChild(conflictCard);
-
-  // ── confidence model breakdown ──
-  const cfCard = document.createElement('div');
-  cfCard.className = 'rcard';
-  cfCard.innerHTML = '<div class="rcard-head"><i class="ti ti-percentage"></i>Confidence model — ' + r.confidence + '%</div>' +
-    CONFIDENCE_FACTORS.map(f => `<div class="cf-row"><span class="cf-name">${f.name}</span><span class="cf-tag ${f.cls}">${f.tag}</span></div>`).join('');
-  scroll.appendChild(cfCard);
-
-  // ── human-in-the-loop review ──
-  const hitlCard = document.createElement('div');
-  hitlCard.className = 'rcard';
-  hitlCard.innerHTML = `
-    <div class="rcard-head"><i class="ti ti-user-check"></i>Analyst review</div>
-    <div class="summary-text" style="margin-bottom:8px">Agent assessment: <b style="color:var(--red)">HIGH RISK — Active C2 infrastructure.</b> Recommended actions require analyst approval before execution.</div>
-    <div class="hitl-actions">
-      <label class="hitl-chk"><input type="checkbox" checked> Block IP</label>
-      <label class="hitl-chk"><input type="checkbox" checked> Search SIEM for internal contact</label>
-      <label class="hitl-chk"><input type="checkbox" checked> Investigate related IOCs</label>
-    </div>
-    <div class="hitl-btns">
-      <div class="hitl-btn approve" onclick="hitlDecide('Approved by analyst — executing recommended actions.')">Approve</div>
-      <div class="hitl-btn modify" onclick="hitlDecide('Marked for modification — awaiting revised action set.')">Modify</div>
-      <div class="hitl-btn reject" onclick="hitlDecide('Rejected — assessment flagged for secondary review.')">Reject</div>
-      <div class="hitl-btn continue" onclick="hitlDecide('Continuing investigation — pivoting into 14 related IOCs.')">Continue Investigation</div>
-    </div>
-    <div class="hitl-decision" id="hitlDecision"></div>`;
-  scroll.appendChild(hitlCard);
-
-  // actions
+  // 8. actions
   const actCard = document.createElement('div');
   actCard.className = 'rcard';
   actCard.innerHTML = '<div class="rcard-head"><i class="ti ti-list-check"></i>Recommended actions</div>' +
     r.actions.map((a, i) => `<div class="action-row ${a.sev}"><span class="action-num">0${i+1}</span><span class="action-text">${a.text}</span></div>`).join('');
   scroll.appendChild(actCard);
 
-  // ── memory / context strip ──
-  const memStrip = document.createElement('div');
-  memStrip.className = 'mem-strip';
-  memStrip.innerHTML = `<i class="ti ti-database"></i> Context: 18 evidence items · 3 hypotheses · 2 investigation iterations · memory retained across pivots`;
-  scroll.appendChild(memStrip);
+  // 9. human-in-the-loop review
+  const revCard = document.createElement('div');
+  revCard.className = 'rcard review-card';
+  revCard.innerHTML = `<div class="rcard-head"><i class="ti ti-user-check"></i>Analyst review — human in the loop</div>
+    <div class="review-verdict"><span class="risk-pill rp-${r.risk}" style="font-size:11px;padding:4px 10px">${r.risk} RISK</span><span style="font-size:12.5px;color:var(--t2)">Agent recommends the following actions before execution:</span></div>
+    <div class="review-checklist">
+      <label class="review-check-row"><input type="checkbox" checked>Block IP at perimeter firewall</label>
+      <label class="review-check-row"><input type="checkbox" checked>Search SIEM for internal contact</label>
+      <label class="review-check-row"><input type="checkbox">Investigate 14 related IOCs</label>
+    </div>
+    <div class="review-btns">
+      <button class="rbtn rb-approve" onclick="reviewAction('approve')"><i class="ti ti-check"></i> Approve</button>
+      <button class="rbtn rb-modify" onclick="reviewAction('modify')"><i class="ti ti-edit"></i> Modify</button>
+      <button class="rbtn rb-reject" onclick="reviewAction('reject')"><i class="ti ti-x"></i> Reject</button>
+      ${investigationIterations === 1 ? '<button class="rbtn rb-continue" onclick="reviewAction(\'continue\')"><i class="ti ti-player-track-next"></i> Continue Investigation →</button>' : ''}
+    </div>
+    <div class="review-outcome" id="reviewOutcome"></div>
+    <div style="margin-top:2px;font-size:11px;color:var(--t3);line-height:1.5"><i class="ti ti-info-circle"></i> AI investigates and recommends — the analyst remains in control. No action is executed automatically.</div>`;
+  scroll.appendChild(revCard);
 
-  // ── export ──
-  const exportCard = document.createElement('div');
-  exportCard.className = 'rcard';
-  exportCard.innerHTML = `
-    <div class="rcard-head"><i class="ti ti-download"></i>Export report</div>
+  // 10. export
+  const expCard = document.createElement('div');
+  expCard.className = 'rcard';
+  expCard.innerHTML = `<div class="rcard-head"><i class="ti ti-download"></i>Export report</div>
     <div class="export-row">
-      <div class="export-btn" onclick="exportStub('PDF')"><i class="ti ti-file-type-pdf"></i>PDF</div>
-      <div class="export-btn" onclick="exportStub('HTML')"><i class="ti ti-file-type-html"></i>HTML</div>
-      <div class="export-btn" onclick="exportStub('JSON')"><i class="ti ti-file-type-json"></i>JSON</div>
-      <div class="export-btn" onclick="exportStub('STIX 2.1')"><i class="ti ti-file-code"></i>STIX 2.1</div>
+      <button class="exp-btn" onclick="exportReport('PDF')"><i class="ti ti-file-type-pdf"></i>PDF</button>
+      <button class="exp-btn" onclick="exportReport('HTML')"><i class="ti ti-file-type-html"></i>HTML</button>
+      <button class="exp-btn" onclick="exportReport('JSON')"><i class="ti ti-file-type-json"></i>JSON</button>
+      <button class="exp-btn" onclick="exportReport('STIX 2.1')"><i class="ti ti-shield-lock"></i>STIX 2.1</button>
     </div>`;
-  scroll.appendChild(exportCard);
+  scroll.appendChild(expCard);
 
   // show chat
   document.getElementById('chatDock').style.display = 'block';
   document.getElementById('chatMessages').innerHTML = '';
-  addChatBubble('chatMessages', 'agent', 'cb-agent', 'Investigation complete. I\'ve analysed 185.220.101.47 across 6 OSINT sources with 91% confidence. This is an active APT C2 node. Ask me anything, or switch to the Agent Lab tab to interrogate each source agent individually.');
-}
-
-function toggleTrace(el) {
-  el.classList.toggle('open');
-  el.querySelector('i').className = el.classList.contains('open') ? 'ti ti-chevron-down' : 'ti ti-chevron-right';
-  el.nextElementSibling.classList.toggle('open');
-}
-
-function hitlDecide(msg) {
-  const d = document.getElementById('hitlDecision');
-  d.textContent = '✓ ' + msg;
-  d.classList.add('show');
-}
-
-function exportStub(fmt) {
-  addChatBubble('chatMessages', 'agent', 'cb-agent', `[Demo] Export as ${fmt} — in the production build this generates a signed ${fmt} report bundle including the evidence graph, timeline, and analyst decision.`);
+  addChatBubble('chatMessages', 'agent', 'cb-agent', `Investigation complete. I've analysed ${DEMO_IOC} across 6 OSINT sources with ${r.confidence}% confidence. This is an active APT C2 node. Ask me anything, or switch to the Evidence Graph or Agent Lab tabs to dig deeper.`);
 }
 
 function runInvestigation() {
@@ -1507,22 +2090,59 @@ function runInvestigation() {
   document.getElementById('chatDock').style.display = 'none';
   Object.keys(SOURCE_UPDATES).forEach(k => setSource(k, '', '—'));
 
+  // reset iteration state
+  investigationIterations = 1;
+  PLAN_STEPS = PLAN_STEPS_BASE.slice();
+  planCurrentIndex = -1;
+  HYPOTHESES_DATA = [
+    { id: 'H1', name: 'Malicious C2 Infrastructure', confidence: 91, status: 'supported', evidence: ['VirusTotal', 'Shodan', 'OTX', 'Threat Feeds'] },
+    { id: 'H2', name: 'Legitimate Tor Relay', confidence: 12, status: 'rejected', evidence: ['High VT detections', 'OTX correlation', 'Multiple blocklists'] },
+    { id: 'H3', name: 'Compromised Hosting Infrastructure', confidence: 38, status: 'active', evidence: ['LeaseWeb VPS context', 'Shared-hosting reuse pattern'] },
+  ];
+  REPORT_DATA.confidence = 91;
+  REPORT_DATA.evidence = REPORT_DATA.evidence.slice(0, 6);
+  TIMELINE_DATA = [
+    { time: '16:21', label: 'Input received' }, { time: '16:21', label: 'Planning' },
+    { time: '16:22', label: 'WHOIS / DNS' }, { time: '16:22', label: 'VT / Shodan', bad: true },
+    { time: '16:23', label: 'Hypothesis updated' }, { time: '16:23', label: 'OTX pivot', bad: true },
+    { time: '16:24', label: 'Final assessment', bad: true },
+  ];
+  GRAPH_EDGES = [
+    ['campaign', 'iocs', false], ['campaign', 'hashes', false], ['campaign', 'ip', true],
+    ['ip', 'tor', true], ['ip', 'asn', false], ['ip', 'dns', false], ['ip', 'rep', true],
+    ['asn', 'leaseweb', false],
+  ];
+  renderPlan();
+  updateMemChip();
+  document.getElementById('graphSideDetail').innerHTML = '<div class="graph-side-empty"><i class="ti ti-click"></i>Select a node in the graph to see its details</div>';
+
+  setPlanStep(0);
+
   // schedule feed log
   FEED_STEPS.forEach(({ t, ic, msg }) => {
     timers.push(setTimeout(() => addFeedItem(ic, msg), t));
   });
 
   // schedule source tile updates
-  Object.entries(SOURCE_UPDATES).forEach(([key, { q, done, cls, val, meta }]) => {
+  Object.entries(SOURCE_UPDATES).forEach(([key, { q, done, cls, val, rel, fresh, ev, ms }]) => {
     timers.push(setTimeout(() => setSource(key, 'querying', '⠿ Querying…', ''), q));
-    timers.push(setTimeout(() => setSource(key, cls, val, meta), done));
+    timers.push(setTimeout(() => setSource(key, cls, val, `Reliability: ${rel} · ${fresh}\nEvidence: ${ev} · ${ms}`), done));
   });
+
+  // schedule plan progression
+  timers.push(setTimeout(() => setPlanStep(1), 700));
+  timers.push(setTimeout(() => setPlanStep(2), 2100));
+  timers.push(setTimeout(() => setPlanStep(3), 3700));
+  timers.push(setTimeout(() => setPlanStep(4), 5100));
+  timers.push(setTimeout(() => setPlanStep(5), 5700));
 
   // build report
   timers.push(setTimeout(() => {
     buildReport(REPORT_DATA);
     investigationDone = true;
+    setPlanStep(6);
     document.getElementById('btnRun').disabled = false;
+    updateMemChip();
     // populate agent lab
     document.getElementById('labIocBadge').textContent = 'IOC: ' + DEMO_IOC;
     document.getElementById('lab-badge').classList.add('show');
@@ -1530,12 +2150,14 @@ function runInvestigation() {
       const btn = document.getElementById('ab-' + key);
       btn.classList.add(d.status);
     });
+    // build evidence graph
+    initGraph();
   }, 6000));
 }
 
 function resetAll() {
   timers.forEach(clearTimeout); timers.length = 0;
-  investigationDone = false; activeAgentKey = null;
+  investigationDone = false; activeAgentKey = null; investigationIterations = 1;
   document.getElementById('btnRun').disabled = false;
   document.getElementById('iocInput').value = '';
   document.getElementById('iocInput').className = 'ioc-input';
@@ -1543,9 +2165,21 @@ function resetAll() {
   document.getElementById('feedList').innerHTML = '<div data-placeholder style="color:var(--t3);font-family:var(--mono);font-size:11px;padding:6px 4px">Waiting for indicator…</div>';
   document.getElementById('reportScroll').innerHTML = '<div class="report-empty"><i class="ti ti-file-analytics"></i><p>Investigation report will appear here once all sources have been queried</p></div>';
   document.getElementById('chatDock').style.display = 'none';
-  Object.keys(SOURCE_UPDATES).forEach(k => setSource(k, '', '—'));
+  Object.keys(SOURCE_UPDATES).forEach(k => setSource(k, '', '—', ''));
   document.getElementById('lab-badge').classList.remove('show');
+  document.getElementById('graph-badge').classList.remove('show');
   document.getElementById('labIocBadge').textContent = 'Run an investigation first';
+  document.getElementById('graphIocBadge').textContent = 'Run an investigation first';
+  document.getElementById('graphEmptyHint').style.display = 'block';
+  document.getElementById('graphSideDetail').innerHTML = '<div class="graph-side-empty"><i class="ti ti-click"></i>Select a node in the graph to see its details</div>';
+  document.getElementById('graphChatMessages').innerHTML = '<div style="color:var(--t3);font-size:11px;padding:4px;font-family:var(--mono)">Run an investigation to start a conversation…</div>';
+  if (graphAnimFrame) { cancelAnimationFrame(graphAnimFrame); graphAnimFrame = null; }
+  graphPNodes = []; graphPEdges = []; graphSelectedId = null; graphHoveredId = null;
+  const gc = document.getElementById('graphCanvasEl');
+  if (gc) gc.getContext('2d').clearRect(0, 0, gc.width, gc.height);
+  lastSelectedGraphNode = null;
+  PLAN_STEPS = []; planCurrentIndex = -1; renderPlan();
+  updateMemChip();
   document.querySelectorAll('.agent-btn').forEach(b => { b.classList.remove('done', 'flagged', 'selected'); });
   document.getElementById('agentResults').innerHTML = '<div class="agent-empty"><i class="ti ti-robot"></i><p>Select a source agent from the sidebar to see its query results, explainability, and suggested actions</p></div>';
   document.getElementById('acMessages').innerHTML = '<div style="color:var(--t3);font-size:11px;padding:4px;font-family:var(--mono)">Select an agent to start a conversation…</div>';
@@ -1657,6 +2291,7 @@ function switchView(v) {
   document.getElementById('v-' + v).classList.add('active');
   document.getElementById('tab-' + v).classList.add('active');
   if (v === 'lab') document.getElementById('lab-badge').classList.remove('show');
+  if (v === 'graph') document.getElementById('graph-badge').classList.remove('show');
 }
 
 /* ─── spin animation ─── */
