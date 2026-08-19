@@ -442,6 +442,18 @@ html, body {
   background: var(--s3); border: 1px solid var(--b2); border-radius: 6px;
   padding: 5px 12px; color: var(--teal);
 }
+.gio-select-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--s3); border: 1px solid var(--b2); border-radius: 6px;
+  padding: 5px 12px;
+}
+.gio-select-wrap i { font-size: 13px; color: var(--teal); flex-shrink: 0; }
+.gio-select {
+  background: transparent; border: none; color: var(--teal);
+  font-family: var(--mono); font-size: 12px; cursor: pointer; outline: none;
+  max-width: 260px;
+}
+.gio-select option { background: var(--s2); color: var(--t1); }
 .lab-hint { font-size: 12px; color: var(--t3); }
 
 .lab-body { flex: 1; display: flex; overflow: hidden; }
@@ -829,6 +841,12 @@ html, body {
 }
 .gc-card { background: var(--s2); border: 1px solid var(--b1); border-radius: 10px; padding: 12px 13px; }
 .gc-card-title { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
+.gc-select {
+  width: 100%; background: var(--s3); border: 1px solid var(--b2); color: var(--t1);
+  font-family: var(--mono); font-size: 11px; padding: 8px 9px; border-radius: 7px; cursor: pointer;
+}
+.gc-select option:disabled { color: var(--t3); }
+.gc-select-hint { font-size: 10px; color: var(--t3); margin-top: 7px; line-height: 1.5; }
 .gc-toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .gc-toggle-row:last-child { margin-bottom: 0; }
 .gc-toggle-label { font-size: 11.5px; color: var(--t2); display: flex; align-items: center; gap: 6px; }
@@ -1015,7 +1033,12 @@ html, body {
   <!-- ═══════════ VIEW: EVIDENCE GRAPH ═══════════ -->
   <div class="view" id="v-graph">
     <div class="lab-banner">
-      <div class="lab-ioc" id="graphIocBadge">Run an investigation first</div>
+      <div class="gio-select-wrap">
+        <i class="ti ti-list-search"></i>
+        <select class="gio-select" id="graphInvestigationSelect" onchange="onGraphInvestigationSelect()">
+          <option value="">No investigations yet</option>
+        </select>
+      </div>
       <div class="lab-hint">Drag to pan, scroll/pinch to zoom, click a node to inspect it — or ask the chat</div>
     </div>
     <div class="graph-body">
@@ -1085,7 +1108,12 @@ html, body {
   <!-- ═══════════ VIEW: AGENT LAB ═══════════ -->
   <div class="view" id="v-lab">
     <div class="lab-banner">
-      <div class="lab-ioc" id="labIocBadge">Run an investigation first</div>
+      <div class="gio-select-wrap">
+        <i class="ti ti-list-search"></i>
+        <select class="gio-select" id="labInvestigationSelect" onchange="onLabInvestigationSelect()">
+          <option value="">No investigations yet</option>
+        </select>
+      </div>
       <div class="lab-hint">Select any source agent to inspect its raw results, reasoning chain, and LLM-suggested actions</div>
     </div>
     <div class="lab-body">
@@ -1839,6 +1867,55 @@ function attachGraphPanZoomOnce() {
   graphListenersReady = true;
 }
 
+/* ── Investigated-IOC selector (list of past investigations) ── */
+let INVESTIGATED_IOCS = []; // { ioc, investigationId, iterations }
+
+function registerInvestigation() {
+  const existing = INVESTIGATED_IOCS.find(i => i.ioc === DEMO_IOC);
+  if (existing) { existing.iterations = investigationIterations; existing.investigationId = INVESTIGATION_ID; }
+  else INVESTIGATED_IOCS.unshift({ ioc: DEMO_IOC, investigationId: INVESTIGATION_ID, iterations: investigationIterations });
+  populateInvestigationSelects();
+}
+
+function populateInvestigationSelects() {
+  ['graphInvestigationSelect', 'labInvestigationSelect'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    if (!INVESTIGATED_IOCS.length) {
+      sel.innerHTML = '<option value="">No investigations yet</option>';
+      return;
+    }
+    sel.innerHTML = INVESTIGATED_IOCS.map(inv =>
+      `<option value="${inv.ioc}" ${inv.ioc === DEMO_IOC ? 'selected' : ''}>${inv.ioc} — ${inv.investigationId}${inv.iterations > 1 ? ' · 2 iterations' : ''}</option>`
+    ).join('');
+  });
+}
+
+function onGraphInvestigationSelect() {
+  const sel = document.getElementById('graphInvestigationSelect');
+  const val = sel.value;
+  if (!val) return;
+  // Only one dummy investigation dataset exists right now — re-center on it.
+  // When more investigations are added, this is where the matching graph dataset would be loaded.
+  if (val === DEMO_IOC) {
+    graphSelectedId = null;
+    graphResetView();
+    showToast('Showing evidence graph for ' + val);
+  }
+}
+
+function onLabInvestigationSelect() {
+  const sel = document.getElementById('labInvestigationSelect');
+  const val = sel.value;
+  if (!val) return;
+  // Only one dummy investigation dataset exists right now — re-show its agent results.
+  // When more investigations are added, this is where the matching agent dataset would be loaded.
+  if (val === DEMO_IOC) {
+    if (activeAgentKey) selectAgent(activeAgentKey);
+    showToast('Showing Agent Lab for ' + val);
+  }
+}
+
 function initGraph() {
   document.getElementById('graphEmptyHint').style.display = 'none';
   graphZoomState = { scale: 1, tx: 0, ty: 0 };
@@ -1846,8 +1923,8 @@ function initGraph() {
   buildGraphPhysics();
   attachGraphPanZoomOnce();
   animateGraph();
-  document.getElementById('graphIocBadge').textContent = 'IOC: ' + DEMO_IOC;
   document.getElementById('graph-badge').classList.add('show');
+  registerInvestigation();
   document.getElementById('graphChatMessages').innerHTML = '';
   addGraphChatBubble('agent', `Evidence graph built for <strong style="color:var(--teal)">${DEMO_IOC}</strong> — ${graphPNodes.length} nodes across ${graphPEdges.length} relationships. Drag nodes or the background to move things around, scroll to zoom, click a node, or ask me about SOLARSHIFT, the IP, ASN, or Tor relay.`);
 }
@@ -2144,8 +2221,8 @@ function runInvestigation() {
     document.getElementById('btnRun').disabled = false;
     updateMemChip();
     // populate agent lab
-    document.getElementById('labIocBadge').textContent = 'IOC: ' + DEMO_IOC;
     document.getElementById('lab-badge').classList.add('show');
+    populateInvestigationSelects();
     Object.entries(AGENT_DATA).forEach(([key, d]) => {
       const btn = document.getElementById('ab-' + key);
       btn.classList.add(d.status);
@@ -2168,8 +2245,6 @@ function resetAll() {
   Object.keys(SOURCE_UPDATES).forEach(k => setSource(k, '', '—', ''));
   document.getElementById('lab-badge').classList.remove('show');
   document.getElementById('graph-badge').classList.remove('show');
-  document.getElementById('labIocBadge').textContent = 'Run an investigation first';
-  document.getElementById('graphIocBadge').textContent = 'Run an investigation first';
   document.getElementById('graphEmptyHint').style.display = 'block';
   document.getElementById('graphSideDetail').innerHTML = '<div class="graph-side-empty"><i class="ti ti-click"></i>Select a node in the graph to see its details</div>';
   document.getElementById('graphChatMessages').innerHTML = '<div style="color:var(--t3);font-size:11px;padding:4px;font-family:var(--mono)">Run an investigation to start a conversation…</div>';
@@ -2178,6 +2253,7 @@ function resetAll() {
   const gc = document.getElementById('graphCanvasEl');
   if (gc) gc.getContext('2d').clearRect(0, 0, gc.width, gc.height);
   lastSelectedGraphNode = null;
+  populateInvestigationSelects(); // keep prior investigations selectable even after resetting the form
   PLAN_STEPS = []; planCurrentIndex = -1; renderPlan();
   updateMemChip();
   document.querySelectorAll('.agent-btn').forEach(b => { b.classList.remove('done', 'flagged', 'selected'); });
