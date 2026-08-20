@@ -431,6 +431,13 @@ html, body {
 ═══════════════════════════════════════ */
 #v-lab { flex-direction: column; }
 #v-graph { flex-direction: column; }
+#v-review { flex-direction: column; }
+.review-grid {
+  flex: 1; overflow-y: auto; padding: 20px 24px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-content: start;
+}
+@media (max-width: 980px) { .review-grid { grid-template-columns: 1fr; } }
+.review-chat-panel { height: 230px; flex-shrink: 0; border-top: 1px solid var(--b1); background: var(--s1); display: flex; flex-direction: column; overflow: hidden; }
 
 .lab-banner {
   flex-shrink: 0; padding: 11px 24px;
@@ -927,6 +934,10 @@ html, body {
         <i class="ti ti-cpu"></i> Agent Lab
         <span class="badge" id="lab-badge">!</span>
       </button>
+      <button class="ntab" id="tab-review" onclick="switchView('review')">
+        <i class="ti ti-user-check"></i> Review
+        <span class="badge" id="review-badge">!</span>
+      </button>
     </div>
     <div class="topbar-right">
       <div class="mem-chip" id="memChip" title="Agent working memory / context window">
@@ -1175,6 +1186,34 @@ html, body {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ VIEW: REVIEW ═══════════ -->
+  <div class="view" id="v-review">
+    <div class="lab-banner">
+      <div class="gio-select-wrap">
+        <i class="ti ti-list-search"></i>
+        <select class="gio-select" id="reviewInvestigationSelect" onchange="onReviewInvestigationSelect()">
+          <option value="">No investigations yet</option>
+        </select>
+      </div>
+      <div class="lab-hint">Recommended actions and human-in-the-loop analyst sign-off before anything is executed</div>
+    </div>
+    <div class="review-grid" id="reviewTabBody">
+      <div class="report-empty" style="grid-column:1/-1"><i class="ti ti-user-check"></i><p>Recommended actions and the analyst review panel will appear here once an investigation completes</p></div>
+    </div>
+    <div class="review-chat-panel">
+      <div class="ac-head"><i class="ti ti-message-2"></i>Ask about the actions or review</div>
+      <div class="ac-messages" id="reviewChatMessages">
+        <div style="color:var(--t3);font-size:11px;padding:4px;font-family:var(--mono)">Run an investigation to start a conversation…</div>
+      </div>
+      <div class="ac-input-row">
+        <input class="ac-input" id="reviewChatInput"
+          placeholder="Ask why an action is recommended, or what Reject does…"
+          onkeydown="if(event.key==='Enter') sendReviewChat()">
+        <button class="ac-send" onclick="sendReviewChat()"><i class="ti ti-send"></i></button>
       </div>
     </div>
   </div>
@@ -1878,7 +1917,7 @@ function registerInvestigation() {
 }
 
 function populateInvestigationSelects() {
-  ['graphInvestigationSelect', 'labInvestigationSelect'].forEach(id => {
+  ['graphInvestigationSelect', 'labInvestigationSelect', 'reviewInvestigationSelect'].forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
     if (!INVESTIGATED_IOCS.length) {
@@ -2010,6 +2049,11 @@ function continueInvestigation() {
     GRAPH_EDGES = GRAPH_EDGES.concat([['campaign', 'ioc7', true]]);
     REPORT_DATA.confidence = 96;
     REPORT_DATA.evidence.push({ src: 'OTX pivot', text: 'Related IOC 91.219.238.12 (SOLARSHIFT cluster) independently confirms C2 pattern with 54/93 VT detections and matching ASN.', tag: 'malicious', tagCls: 'tag-mal' });
+    REPORT_DATA.actions.push(
+      { sev: 'critical', text: 'Block secondary C2 node 91.219.238.12 at the perimeter firewall and NGFW.' },
+      { sev: 'warning',  text: 'Expand SIEM/EDR retro-hunt to include 91.219.238.12 across the past 30 days.' },
+      { sev: 'info',     text: 'Add 91.219.238.12 and its associated hashes to MISP under the SOLARSHIFT event.' },
+    );
     TIMELINE_DATA = TIMELINE_DATA.concat(TIMELINE_ITER2);
   }, 2600));
   timers.push(setTimeout(() => {
@@ -2018,8 +2062,11 @@ function continueInvestigation() {
     buildReport(REPORT_DATA);
     initGraph();
     updateMemChip();
-    box.innerHTML = '<i class="ti ti-circle-check" style="color:var(--purple)"></i> <b style="color:var(--purple)">Iteration 2 complete.</b> Investigated related IOC 91.219.238.12 — confidence raised to <b style="color:var(--purple)">96%</b>. Evidence graph and hypotheses updated. See the Evidence Graph tab for the new node.';
-    box.style.cssText += 'background:var(--purple-dim);border:1px solid rgba(167,139,250,.25)';
+    const box2 = document.getElementById('reviewOutcome');
+    box2.innerHTML = '<i class="ti ti-circle-check" style="color:var(--purple)"></i> <b style="color:var(--purple)">Iteration 2 complete.</b> Investigated related IOC 91.219.238.12 — confidence raised to <b style="color:var(--purple)">96%</b>. 3 new actions recommended below. Evidence graph and hypotheses updated.';
+    box2.style.cssText += 'background:var(--purple-dim);border:1px solid rgba(167,139,250,.25)';
+    box2.classList.add('show');
+    addReviewChatBubble('agent', 'Iteration 2 complete — 3 new actions added above for related IOC 91.219.238.12. Confidence is now 96%.');
   }, 3400));
 }
 
@@ -2113,32 +2160,20 @@ function buildReport(r) {
     `<div class="tl-row">${TIMELINE_DATA.map(t => `<div class="tl-node ${t.bad ? 'tl-bad' : ''}"><div class="tl-line"></div><div class="tl-dot"></div><div class="tl-time">${t.time}</div><div class="tl-label">${t.label}</div></div>`).join('')}</div>`;
   scroll.appendChild(tlCard);
 
-  // 8. actions
-  const actCard = document.createElement('div');
-  actCard.className = 'rcard';
-  actCard.innerHTML = '<div class="rcard-head"><i class="ti ti-list-check"></i>Recommended actions</div>' +
-    r.actions.map((a, i) => `<div class="action-row ${a.sev}"><span class="action-num">0${i+1}</span><span class="action-text">${a.text}</span></div>`).join('');
-  scroll.appendChild(actCard);
+  // Actions + human-in-the-loop review now live in their own "Review" tab.
+  const reviewPointer = document.createElement('div');
+  reviewPointer.className = 'rcard';
+  reviewPointer.style.cssText = 'border-color:rgba(167,139,250,.25);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer';
+  reviewPointer.onclick = () => switchView('review');
+  reviewPointer.innerHTML = `<div style="display:flex;align-items:center;gap:10px">
+      <i class="ti ti-user-check" style="font-size:18px;color:var(--purple)"></i>
+      <div><div style="font-size:12.5px;font-weight:500;color:var(--t1)">Recommended actions & analyst review</div>
+      <div style="font-size:11px;color:var(--t3)">${r.actions.length} recommended actions awaiting sign-off</div></div>
+    </div>
+    <span class="rbtn rb-continue" style="pointer-events:none"><i class="ti ti-arrow-right"></i> Open Review</span>`;
+  scroll.appendChild(reviewPointer);
 
-  // 9. human-in-the-loop review
-  const revCard = document.createElement('div');
-  revCard.className = 'rcard review-card';
-  revCard.innerHTML = `<div class="rcard-head"><i class="ti ti-user-check"></i>Analyst review — human in the loop</div>
-    <div class="review-verdict"><span class="risk-pill rp-${r.risk}" style="font-size:11px;padding:4px 10px">${r.risk} RISK</span><span style="font-size:12.5px;color:var(--t2)">Agent recommends the following actions before execution:</span></div>
-    <div class="review-checklist">
-      <label class="review-check-row"><input type="checkbox" checked>Block IP at perimeter firewall</label>
-      <label class="review-check-row"><input type="checkbox" checked>Search SIEM for internal contact</label>
-      <label class="review-check-row"><input type="checkbox">Investigate 14 related IOCs</label>
-    </div>
-    <div class="review-btns">
-      <button class="rbtn rb-approve" onclick="reviewAction('approve')"><i class="ti ti-check"></i> Approve</button>
-      <button class="rbtn rb-modify" onclick="reviewAction('modify')"><i class="ti ti-edit"></i> Modify</button>
-      <button class="rbtn rb-reject" onclick="reviewAction('reject')"><i class="ti ti-x"></i> Reject</button>
-      ${investigationIterations === 1 ? '<button class="rbtn rb-continue" onclick="reviewAction(\'continue\')"><i class="ti ti-player-track-next"></i> Continue Investigation →</button>' : ''}
-    </div>
-    <div class="review-outcome" id="reviewOutcome"></div>
-    <div style="margin-top:2px;font-size:11px;color:var(--t3);line-height:1.5"><i class="ti ti-info-circle"></i> AI investigates and recommends — the analyst remains in control. No action is executed automatically.</div>`;
-  scroll.appendChild(revCard);
+  renderReviewTab(r);
 
   // 10. export
   const expCard = document.createElement('div');
@@ -2155,7 +2190,95 @@ function buildReport(r) {
   // show chat
   document.getElementById('chatDock').style.display = 'block';
   document.getElementById('chatMessages').innerHTML = '';
-  addChatBubble('chatMessages', 'agent', 'cb-agent', `Investigation complete. I've analysed ${DEMO_IOC} across 6 OSINT sources with ${r.confidence}% confidence. This is an active APT C2 node. Ask me anything, or switch to the Evidence Graph or Agent Lab tabs to dig deeper.`);
+  addChatBubble('chatMessages', 'agent', 'cb-agent', `Investigation complete. I've analysed ${DEMO_IOC} across 6 OSINT sources with ${r.confidence}% confidence. This is an active APT C2 node. Ask me anything, or switch to the Evidence Graph, Agent Lab, or Review tabs to dig deeper.`);
+}
+
+function renderReviewTab(r) {
+  const body = document.getElementById('reviewTabBody');
+  body.innerHTML = '';
+
+  const actCard = document.createElement('div');
+  actCard.className = 'rcard';
+  actCard.innerHTML = '<div class="rcard-head"><i class="ti ti-list-check"></i>Recommended actions</div>' +
+    r.actions.map((a, i) => `<div class="action-row ${a.sev}"><span class="action-num">0${i+1}</span><span class="action-text">${a.text}</span></div>`).join('');
+  body.appendChild(actCard);
+
+  const checklistItems = [
+    { label: 'Block IP at perimeter firewall', checked: true },
+    { label: 'Search SIEM for internal contact', checked: true },
+    { label: 'Investigate 14 related IOCs', checked: false },
+  ];
+  if (investigationIterations > 1) {
+    checklistItems.push(
+      { label: 'Block related IOC 91.219.238.12 at perimeter firewall', checked: true },
+      { label: 'Add 91.219.238.12 + hashes to MISP under SOLARSHIFT event', checked: true },
+    );
+  }
+  const revCard = document.createElement('div');
+  revCard.className = 'rcard review-card';
+  revCard.innerHTML = `<div class="rcard-head"><i class="ti ti-user-check"></i>Analyst review — human in the loop</div>
+    <div class="review-verdict"><span class="risk-pill rp-${r.risk}" style="font-size:11px;padding:4px 10px">${r.risk} RISK</span><span style="font-size:12.5px;color:var(--t2)">Agent recommends the following actions before execution:</span></div>
+    <div class="review-checklist">
+      ${checklistItems.map(c => `<label class="review-check-row"><input type="checkbox" ${c.checked ? 'checked' : ''}>${c.label}</label>`).join('')}
+    </div>
+    <div class="review-btns">
+      <button class="rbtn rb-approve" onclick="reviewAction('approve')"><i class="ti ti-check"></i> Approve</button>
+      <button class="rbtn rb-modify" onclick="reviewAction('modify')"><i class="ti ti-edit"></i> Modify</button>
+      <button class="rbtn rb-reject" onclick="reviewAction('reject')"><i class="ti ti-x"></i> Reject</button>
+      ${investigationIterations === 1 ? '<button class="rbtn rb-continue" onclick="reviewAction(\'continue\')"><i class="ti ti-player-track-next"></i> Continue Investigation →</button>' : ''}
+    </div>
+    <div class="review-outcome" id="reviewOutcome"></div>
+    <div style="margin-top:2px;font-size:11px;color:var(--t3);line-height:1.5"><i class="ti ti-info-circle"></i> AI investigates and recommends — the analyst remains in control. No action is executed automatically.</div>`;
+  body.appendChild(revCard);
+
+  document.getElementById('review-badge').classList.add('show');
+
+  if (investigationIterations === 1 && !reviewChatStarted) {
+    reviewChatStarted = true;
+    document.getElementById('reviewChatMessages').innerHTML = '';
+    addReviewChatBubble('agent', `${r.actions.length} actions recommended for <strong style="color:var(--teal)">${DEMO_IOC}</strong> — ${r.risk} RISK, ${r.confidence}% confidence. Ask me why an action is recommended, or what happens if you reject or modify it.`);
+  }
+}
+
+function onReviewInvestigationSelect() {
+  const sel = document.getElementById('reviewInvestigationSelect');
+  const val = sel.value;
+  if (!val) return;
+  if (val === DEMO_IOC) showToast('Showing review for ' + val);
+}
+
+/* ── Review tab chat ── */
+let reviewChatStarted = false;
+const REVIEW_CHAT_RESPONSES = {
+  'block': 'Blocking the IP is recommended because 62/93 VirusTotal engines flag it malicious and Shodan confirms active C2-style TLS traffic — this cuts off any live command-and-control channel immediately.',
+  'reject': 'Rejecting logs the recommendation for audit but takes no action — nothing gets blocked or queried. Useful if you\'ve independently verified this is a false positive.',
+  'modify': 'Modify sends the action set back to the analyst queue so you can edit which actions run (e.g. skip the IOC import) before anything executes.',
+  'approve': 'Approving queues the checked actions for execution by the analyst — the agent never executes them automatically, a human always authorises the final step.',
+  'siem': 'The SIEM/EDR search checks for any internal host that has already talked to this IP in the last 30 days, so you can catch a live compromise, not just block future traffic.',
+  'continue': 'Continue Investigation pivots the agent to the highest-priority related IOC in the SOLARSHIFT cluster, which adds fresh recommended actions here once it completes.',
+  'risk': `Current risk is ${REPORT_DATA.risk}, driven mainly by multi-source agreement across VirusTotal, Shodan and OTX plus an active OTX campaign correlation.`,
+};
+function addReviewChatBubble(type, text) {
+  const c = document.getElementById('reviewChatMessages');
+  const d = document.createElement('div');
+  d.className = 'ac-bubble ' + (type === 'user' ? 'user' : 'agent');
+  d.innerHTML = `<div class="ac-who ${type === 'user' ? 'u' : 'a'}">${type === 'user' ? 'Analyst' : 'Agent'}</div><div class="ac-msg-text">${text}</div>`;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+function sendReviewChat() {
+  if (!investigationDone) {
+    document.getElementById('reviewChatMessages').innerHTML = '<div style="color:var(--amber);font-size:11px;padding:4px;font-family:var(--mono)">⚠ Run an investigation first.</div>';
+    return;
+  }
+  const inp = document.getElementById('reviewChatInput');
+  const q = inp.value.trim(); if (!q) return;
+  addReviewChatBubble('user', q);
+  inp.value = '';
+  const lq = q.toLowerCase();
+  const match = Object.entries(REVIEW_CHAT_RESPONSES).find(([k]) => lq.includes(k));
+  const resp = match ? match[1] : `Based on ${REPORT_DATA.evidence.length} evidence items across 6 sources, this is assessed as ${REPORT_DATA.risk} RISK at ${REPORT_DATA.confidence}% confidence. Ask me about a specific action, or what Approve/Modify/Reject/Continue Investigation do.`;
+  setTimeout(() => addReviewChatBubble('agent', resp), 500);
 }
 
 function runInvestigation() {
@@ -2165,6 +2288,7 @@ function runInvestigation() {
   document.getElementById('feedList').innerHTML = '';
   document.getElementById('reportScroll').innerHTML = '<div class="report-empty"><i class="ti ti-loader" style="font-size:40px;opacity:.2;animation:spin 1s linear infinite"></i><p>Running investigation across 6 OSINT sources…</p></div>';
   document.getElementById('chatDock').style.display = 'none';
+  document.getElementById('review-badge').classList.remove('show');
   Object.keys(SOURCE_UPDATES).forEach(k => setSource(k, '', '—'));
 
   // reset iteration state
@@ -2178,6 +2302,7 @@ function runInvestigation() {
   ];
   REPORT_DATA.confidence = 91;
   REPORT_DATA.evidence = REPORT_DATA.evidence.slice(0, 6);
+  REPORT_DATA.actions = REPORT_DATA.actions.slice(0, 4);
   TIMELINE_DATA = [
     { time: '16:21', label: 'Input received' }, { time: '16:21', label: 'Planning' },
     { time: '16:22', label: 'WHOIS / DNS' }, { time: '16:22', label: 'VT / Shodan', bad: true },
@@ -2245,6 +2370,10 @@ function resetAll() {
   Object.keys(SOURCE_UPDATES).forEach(k => setSource(k, '', '—', ''));
   document.getElementById('lab-badge').classList.remove('show');
   document.getElementById('graph-badge').classList.remove('show');
+  document.getElementById('review-badge').classList.remove('show');
+  document.getElementById('reviewTabBody').innerHTML = '<div class="report-empty" style="grid-column:1/-1"><i class="ti ti-user-check"></i><p>Recommended actions and the analyst review panel will appear here once an investigation completes</p></div>';
+  document.getElementById('reviewChatMessages').innerHTML = '<div style="color:var(--t3);font-size:11px;padding:4px;font-family:var(--mono)">Run an investigation to start a conversation…</div>';
+  reviewChatStarted = false;
   document.getElementById('graphEmptyHint').style.display = 'block';
   document.getElementById('graphSideDetail').innerHTML = '<div class="graph-side-empty"><i class="ti ti-click"></i>Select a node in the graph to see its details</div>';
   document.getElementById('graphChatMessages').innerHTML = '<div style="color:var(--t3);font-size:11px;padding:4px;font-family:var(--mono)">Run an investigation to start a conversation…</div>';
@@ -2368,6 +2497,7 @@ function switchView(v) {
   document.getElementById('tab-' + v).classList.add('active');
   if (v === 'lab') document.getElementById('lab-badge').classList.remove('show');
   if (v === 'graph') document.getElementById('graph-badge').classList.remove('show');
+  if (v === 'review') document.getElementById('review-badge').classList.remove('show');
 }
 
 /* ─── spin animation ─── */
